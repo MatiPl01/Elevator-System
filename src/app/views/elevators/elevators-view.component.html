@@ -1,0 +1,11 @@
+<main class="elevators">
+  <app-elevator-box></app-elevator-box>
+
+  <div class="overlay" [ngClass]="{ hidden: !outlet.isActivated }">
+    <div class="overlay__outlet">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+    <div class="overlay__background" routerLink="/">
+    </div>
+  </div>
+</main>

@@ -1,0 +1,26 @@
+<article class="elevator-box">
+  <div class="elevator-box__wrapper">
+    <ul class="elevator-box__elevators">
+      <li *ngFor="let elevator of elevatorService.elevators; let idx = index" class="elevator-box__elevator-container"
+        [ngStyle]="styles.elevatorContainer[idx]">
+        <app-elevator [config]="elevator"></app-elevator>
+      </li>
+    </ul>
+
+    <ul class="elevator-box__floors">
+      <li *ngFor="let floor of elevatorService.floors; let idx = index" class="elevator-box__floor"
+        [ngStyle]="styles.floor[idx]">
+        <ul class="elevator-box__panels">
+          <li *ngFor="let _ of [].constructor(elevatorService.elevators.length - 1)" class="elevator-box__panel">
+            <article class="mini-panel" [routerLink]="['panel', floor.number]">
+              <div class="mini-panel__inner">
+                <header class="mini-panel__header"></header>
+                <button class="mini-panel__button mini-panel__button--submit"></button>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</article>

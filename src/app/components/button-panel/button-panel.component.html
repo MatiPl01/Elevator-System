@@ -30,6 +30,7 @@
       <div class="button-panel__tabs-wrapper">
         <button class="button-panel__button button-panel__button--prev" 
                 (click)="changeButtonTab(-1)"
+                type="button"
                 [ngClass]="{ hidden: currentTabIdx === 0 }">
           <svg class="button-panel__icon">
             <use href="/assets/icons/icons.svg#chevron-left"></use>
@@ -60,6 +61,7 @@
         
         <button class="button-panel__button button-panel__button--next" 
                 (click)="changeButtonTab(+1)"
+                type="button"
                 [ngClass]="{ hidden: currentTabIdx === floorGroups.length - 1 }">
           <svg class="button-panel__icon">
             <use href="/assets/icons/icons.svg#chevron-right"></use>
@@ -69,6 +71,7 @@
   
       <button class="button-panel__button button-panel__button--submit"
               (click)="submitChoice()"
+              type="submit"
               [ngClass]="{ disabled: !floorChoice }"
               [disabled]="!floorChoice">
         Submit

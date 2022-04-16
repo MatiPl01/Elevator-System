@@ -18,10 +18,10 @@ type Styles = {
 }
 
 @Component({
-  selector: 'app-elevator-hall',
-  templateUrl: './elevator-hall.component.html'
+  selector: 'app-elevator-box',
+  templateUrl: './elevator-box.component.html'
 })
-export class ElevatorHallComponent implements OnInit {
+export class ElevatorBoxComponent implements OnInit {
   private readonly floorMap = new Map<number, FloorConfig>();
   public readonly styles: Styles = {
     elevatorContainer: [],

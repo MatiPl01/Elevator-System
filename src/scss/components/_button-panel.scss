@@ -3,18 +3,15 @@
 @use '../utils/shadows' as sh;
 @use '../utils/gradients' as g;
 
-// DELME
-body {
-  @include flex-center;
-}
 
 .button-panel {
   $underline-height: .5rem;
 
+  width: 45rem;
   background-color: c.$gray-light-1;
   box-shadow: sh.$black-strong-small, sh.$black-light-large;
   border-radius: .5rem;
-  padding: 4rem 3rem;
+  padding: 3rem;
 
   &__inner {
     border-radius: .5rem;
@@ -136,6 +133,7 @@ body {
 
   &__button-tab {
     position: absolute;
+    height: 100%;
     left: -125%;
     transition: left .5s cubic-bezier(0.075, 0.82, 0.165, 1);
 

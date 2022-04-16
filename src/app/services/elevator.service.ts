@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import binarySearch from '../utils/algorithms/binary-search.algorithm';
 
 
 @Injectable({
@@ -8,24 +7,24 @@ import binarySearch from '../utils/algorithms/binary-search.algorithm';
 export class ElevatorService {
   public readonly elevators = [
     {
-      minAvailableFloor: -1,
-      maxAvailableFloor: 8,
+      minAvailableFloor: 0,
+      maxAvailableFloor: 10,
       maxLoad: 4,
       speed: 2,
       stopDuration: 10,
       initialFloor: 0
     },
     {
-      minAvailableFloor: -1,
-      maxAvailableFloor: 8,
+      minAvailableFloor: 10,
+      maxAvailableFloor: 20,
       maxLoad: 3,
       speed: 1.5,
       stopDuration: 10,
-      initialFloor: 0
+      initialFloor: 10
     },
     {
       minAvailableFloor: -1,
-      maxAvailableFloor: 8,
+      maxAvailableFloor: 18,
       maxLoad: 3,
       speed: 1.75,
       stopDuration: 10,
@@ -74,54 +73,54 @@ export class ElevatorService {
       number: 8,
       height: 2.5
     },
-    // {
-    //   number: 9,
-    //   height: 3.5
-    // },
-    // {
-    //   number: 10,
-    //   height: 2.5
-    // },
-    // {
-    //   number: 11,
-    //   height: 2.75
-    // },
-    // {
-    //   number: 12,
-    //   height: 3
-    // },
-    // {
-    //   number: 13,
-    //   height: 2.5
-    // },
-    // {
-    //   number: 14,
-    //   height: 3.5
-    // },
-    // {
-    //   number: 15,
-    //   height: 2.5
-    // },
-    // {
-    //   number: 16,
-    //   height: 2.75
-    // },
-    // {
-    //   number: 17,
-    //   height: 3
-    // },
-    // {
-    //   number: 18,
-    //   height: 2.5
-    // },
-    // {
-    //   number: 19,
-    //   height: 3.5
-    // },
-    // {
-    //   number: 20,
-    //   height: 2.5
-    // },
+    {
+      number: 9,
+      height: 3.5
+    },
+    {
+      number: 10,
+      height: 2.5
+    },
+    {
+      number: 11,
+      height: 2.75
+    },
+    {
+      number: 12,
+      height: 3
+    },
+    {
+      number: 13,
+      height: 2.5
+    },
+    {
+      number: 14,
+      height: 3.5
+    },
+    {
+      number: 15,
+      height: 2.5
+    },
+    {
+      number: 16,
+      height: 2.75
+    },
+    {
+      number: 17,
+      height: 3
+    },
+    {
+      number: 18,
+      height: 2.5
+    },
+    {
+      number: 19,
+      height: 3.5
+    },
+    {
+      number: 20,
+      height: 2.5
+    },
     // {
     //   number: 21,
     //   height: 2.75
@@ -286,15 +285,23 @@ export class ElevatorService {
 
   public readonly floorHeights: number[] = [0];
   private readonly minFloorNum = this.floors[0].number;
+  private readonly availableFloors: { min: number, max: number }[] = [];
 
   constructor() {
     this.calcFloorHeightSums();
-    console.log(this.floorHeights)
-    console.log(this.floors)
+    this.updateAvailableFloors();
   }
 
   getFloorHeight(floorNum: number): number {
     return this.floorHeights[floorNum - this.minFloorNum];
+  }
+
+  getAvailableFloorsFrom(fromFloorNum: number): { min: number, max: number } {
+    const idx = fromFloorNum - this.minFloorNum;
+    return {
+      min: this.availableFloors[idx]?.min || Infinity,
+      max: this.availableFloors[idx]?.max || -Infinity
+    }
   }
 
   private calcFloorHeightSums() {
@@ -302,6 +309,21 @@ export class ElevatorService {
       const { height: prevHeight } = this.floors[i - 1];
       const prevSum = this.floorHeights[i - 1];
       this.floorHeights.push(prevSum + prevHeight);
+    }
+  }
+
+  private updateAvailableFloors() {
+    for (let i = this.minFloorNum; i < this.floors.length; i++) {
+      this.availableFloors.push({ min: Infinity, max: -Infinity });
+    }
+    
+    for (const elevator of this.elevators) {
+      const minIdx = elevator.minAvailableFloor - this.minFloorNum;
+      const maxIdx = elevator.maxAvailableFloor - this.minFloorNum;
+      for (let i = minIdx; i <= maxIdx; i++) {
+        this.availableFloors[i].min = Math.min(this.availableFloors[i].min, elevator.minAvailableFloor);
+        this.availableFloors[i].max = Math.max(this.availableFloors[i].max, elevator.maxAvailableFloor);
+      }
     }
   }
 }

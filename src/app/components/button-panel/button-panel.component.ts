@@ -1,4 +1,6 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ElevatorService } from 'src/app/services/elevator.service';
 
 @Component({
   selector: 'app-button-panel[minAvailableFloor][maxAvailableFloor]', // Make attributes required
@@ -6,15 +8,22 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ButtonPanelComponent implements OnInit {
   private static readonly MAX_BUTTONS_PER_SCREEN = 16;
-  
-  @Input() minAvailableFloor!: number;
-  @Input() maxAvailableFloor!: number;
-  @Output() floorChoiceEvent = new EventEmitter<number>();
 
+  private readonly minAvailableFloor: number;
+  private readonly maxAvailableFloor: number;
+  private readonly startFloorNum: number;
   public floorGroups: number[][] = [];
   public currentTabIdx: number = 0;
   public underlinedTabIdx = this.currentTabIdx;
   public floorChoice!: number;
+
+  constructor(private elevatorService: ElevatorService,
+              private route: ActivatedRoute) {
+    this.startFloorNum = +this.route.snapshot.params['floorNum'];
+    const { min, max } = this.elevatorService.getAvailableFloorsFrom(this.startFloorNum);
+    this.minAvailableFloor = min;
+    this.maxAvailableFloor = max;
+  }
 
   ngOnInit() {
     this.groupFloors();
@@ -52,6 +61,6 @@ export class ButtonPanelComponent implements OnInit {
   }
 
   submitChoice() {
-    this.floorChoiceEvent.emit(this.floorChoice);
+    console.log('choice', this.floorChoice)
   }
 }
