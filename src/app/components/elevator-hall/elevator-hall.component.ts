@@ -60,7 +60,7 @@ export class ElevatorHallComponent implements OnInit {
   }
 
   private updateFloorStyles() {
-    for (const floor of this.elevatorService.floors) {
+    for (const floor of this.elevatorService.floors.reverse()) {
       this.styles.floor.push({
         height: `${floor.height}em`
       })

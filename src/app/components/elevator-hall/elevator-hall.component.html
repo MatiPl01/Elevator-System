@@ -1,15 +1,17 @@
 <article class="elevator-hall">
   <div class="elevator-hall__wrapper">
     <ul class="elevator-hall__elevators">
-      <li *ngFor="let elevator of elevatorService.elevators; let idx = index" class="elevator-hall__elevator-container"
-        [ngStyle]="styles.elevatorContainer[idx]">
+      <li *ngFor="let elevator of elevatorService.elevators; let idx = index" 
+          class="elevator-hall__elevator-container"
+          [ngStyle]="styles.elevatorContainer[idx]">
         <app-elevator [config]="elevator"></app-elevator>
       </li>
     </ul>
     
     <ul class="elevator-hall__floors">
-      <li *ngFor="let floor of elevatorService.floors; let idx = index" class="elevator-hall__floor" [ngStyle]="styles.floor[idx]">
-    
+      <li *ngFor="let floor of elevatorService.floors; let idx = index" 
+          class="elevator-hall__floor" 
+          [ngStyle]="styles.floor[idx]">
       </li>
     </ul>
   </div>

@@ -21,6 +21,10 @@ export class Queue {
     return this._length;
   }
 
+  get first(): any {
+    return this.head?.value;
+  }
+
   enqueue(value: any) {
     const node = new Node(value);
     if (!this._length) this.head = this.tail = node;

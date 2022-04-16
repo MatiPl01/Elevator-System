@@ -1,5 +1,6 @@
 export enum ElevatorState {
-  UP = 'Going up',
-  DOWN = 'Going down',
-  IDLE = 'Idle'
+  UP = 'going up',
+  DOWN = 'going down',
+  IDLE = 'idle',
+  STOPPED = 'stopped'
 }
