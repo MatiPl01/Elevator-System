@@ -6,10 +6,7 @@ html {
 body {
   box-sizing: border-box;
   max-width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: none;
+  min-height: 100vh;
   font-size: 1.6rem;
 }
 

@@ -100,8 +100,13 @@ body {
       text-shadow: sh.$black-strong-medium;
       transition: transform .2s;
 
-      &:active {
+      &:not(.disabled):active {
         transform: translateY(2px) scale(.99); 
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        background: g.$gray;
       }
     }
   }

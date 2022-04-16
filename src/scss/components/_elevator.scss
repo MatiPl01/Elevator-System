@@ -1,0 +1,18 @@
+@use '../utils/colors' as c;
+
+
+.elevator {
+  background-color: c.$gray-dark-2;
+  width: 100%;
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  
+  &::before {
+    content: '';
+    padding-bottom: 125%;
+    display: block;
+  }
+}
