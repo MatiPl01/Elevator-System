@@ -9,12 +9,12 @@ class Node {
 
 
 export class Queue {
-  private head: Node | null;
-  private tail: Node | null;
+  private _head: Node;
+  private _tail: Node;
   private _length: number = 0;
 
-  constructor() {
-    this.head = this.tail = null;
+  constructor(sentinelValue: any = null) {
+    this._head = this._tail = new Node(sentinelValue);
   }
 
   get length(): number {
@@ -22,12 +22,35 @@ export class Queue {
   }
 
   get first(): any {
-    return this.head?.value;
+    return this._head.next ? this._head.next.value : null;
+  }
+
+  get head(): Node {
+    return this._head;
+  }
+
+  get tail(): Node {
+    return this._tail;
   }
 
   [Symbol.iterator]() {
-    let prev: Node | null = null;
-    let curr = this.head;
+    return this.iter();
+  }
+
+  enqueue(value: any) {
+    this._tail = this._tail.next = new Node(value);
+    this._length++;
+  }
+
+  dequeue(): any {
+    if (!this._head.next) return null;
+    this._head.next = this._head.next.next;
+    this._length--;
+  }
+
+  iter() {
+    let prev: Node | null = this._head;
+    let curr = this._head.next;
 
     return {
       next() {
@@ -35,23 +58,10 @@ export class Queue {
 
         return {
           value: prev?.value,
+          node: prev,
           done: !prev
-        }
+        };
       }
     }
-  }
-
-  enqueue(value: any) {
-    const node = new Node(value);
-    if (!this._length) this.head = this.tail = node;
-    else this.tail = this.tail!.next = node;
-    this._length++;
-  }
-
-  dequeue(): any {
-    if (!this._length) return null;
-    this.head = this.head!.next;
-    if (!this.head) this.tail = null;
-    this._length--;
   }
 }

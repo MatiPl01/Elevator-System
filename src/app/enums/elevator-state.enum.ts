@@ -1,7 +1,7 @@
 export enum ElevatorState {
   IDLE,
   MOVING,
-  STOPPED,
+  WAITING,
   OPEN_DOOR,
   CLOSE_DOOR,
 }

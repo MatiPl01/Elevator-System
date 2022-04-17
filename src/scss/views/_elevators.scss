@@ -4,6 +4,7 @@
 
 .elevators {
   @include flex-center;
+  background: radial-gradient(c.$gray-light-4, c.$gray-dark-2);
   
   .overlay {
     position: fixed;

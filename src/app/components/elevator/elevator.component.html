@@ -3,16 +3,16 @@
   <section class="elevator__doors"
            [ngClass]="{ open: 
               state === ElevatorState.IDLE || 
-              state === ElevatorState.STOPPED || 
+              state === ElevatorState.WAITING || 
               state === ElevatorState.OPEN_DOOR }">
     <div class="elevator__door elevator__door--left"
-         [ngStyle]="{ 'transition-duration': toggleDoorDuration + 's' }">
+         [ngStyle]="{ 'transition-duration': timeService.convertDuration(toggleDoorDuration) + 's' }">
       <article class="elevator__id">
         <h2 class="elevator__id-code">{{ id }}</h2>
       </article>
     </div>
     <div class="elevator__door elevator__door--right"
-         [ngStyle]="{ 'transition-duration': toggleDoorDuration + 's' }"></div>
+         [ngStyle]="{ 'transition-duration': timeService.convertDuration(toggleDoorDuration) + 's' }"></div>
   </section>
 
   <section class="elevator__inside">

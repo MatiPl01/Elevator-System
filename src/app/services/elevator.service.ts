@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ElevatorComponent } from "../components/elevator/elevator.component";
-import { Queue } from "../utils/data-structures/queue.data-structure";
+import { ElevatorComponent, RouteData } from "../components/elevator/elevator.component";
 
 
 @Injectable({
@@ -15,28 +14,27 @@ export class ElevatorService {
       maxAvailableFloor: 10,
       maxLoad: 4,
       speed: 2,
-      initialFloorNum: 0,
-      toggleDoorDuration: 2,
-      waitForPeopleDuration: 5
+      idleFloorNum: 0,
+      stopDuration: 5,
+      toggleDoorDuration: 2
     },
     {
       minAvailableFloor: 10,
       maxAvailableFloor: 20,
       maxLoad: 3,
       speed: 1.5,
-      initialFloorNum: 10,
-      toggleDoorDuration: 1.5,
-      waitForPeopleDuration: 6
+      idleFloorNum: 10,
+      stopDuration: 6,
+      toggleDoorDuration: 1.5
     },
     {
       minAvailableFloor: -1,
       maxAvailableFloor: 18,
       maxLoad: 3,
-      speed: 1.75,
-      stopDuration: 10,
-      initialFloorNum: 0,
-      toggleDoorDuration: 2.5,
-      waitForPeopleDuration: 8
+      speed: 1.5,
+      idleFloorNum: 0,
+      stopDuration: 6,
+      toggleDoorDuration: 1.5
     }
   ];
 
@@ -299,13 +297,6 @@ export class ElevatorService {
   constructor() {
     this.calcFloorHeightSums();
     this.updateAvailableFloors();
-
-    const q = new Queue();
-    q.enqueue(1);
-    q.enqueue(2);
-    q.enqueue(3);
-
-    console.log(...q);
   }
 
   registerElevator(elevator: ElevatorComponent): string {
@@ -333,21 +324,25 @@ export class ElevatorService {
           && elevator.minAvailableFloor <= toFloorNum
           && toFloorNum <= elevator.maxAvailableFloor;
     })
-    
-    // Find an elevator for which the increase of the total time to
-    // destination of all passengers will be the lowest
-    let minTimeIncrease = Infinity;
-    let bestElevator = null;
+
+    // Find the lowest total time route
+    let bestTime = Infinity;
+    let bestRoute!: RouteData;
+    let bestElevator!: ElevatorComponent;
+
     for (const elevator of availableElevators) {
-      const currentTimeIncrease = elevator.calcTotalCost(fromFloorNum, toFloorNum);
-      if (currentTimeIncrease < minTimeIncrease) {
-        minTimeIncrease = currentTimeIncrease;
+      const elevatorBestRoute = elevator.findBestRoute(fromFloorNum, toFloorNum);
+      console.log(elevator.id, elevatorBestRoute)
+
+      if (elevatorBestRoute.totalTime < bestTime) {
+        bestTime = elevatorBestRoute.totalTime;
+        bestRoute = elevatorBestRoute;
         bestElevator = elevator;
       }
     }
     
     // Add a route to the elevator
-    if (bestElevator) bestElevator.addRoute(fromFloorNum, toFloorNum);
+    if (bestElevator) bestElevator.addRoute(bestRoute);
     else console.error("Could not find the best elevator");
   }
 

@@ -11,6 +11,10 @@ export class TimeService {
     this.lastFrameTime = this.getTime();
   }
 
+  convertDuration(realDuration: number): number {
+    return realDuration / TimeService.TIME_MULTIPLIER;
+  }
+
   getElapsedTime(startTime: number): number {
     return (this.getTime() - startTime) * TimeService.TIME_MULTIPLIER;
   }
