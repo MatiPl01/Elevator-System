@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use '../utils/colors' as c;
 @use '../utils/shadows' as sh;
 @use '../utils/gradients' as g;
@@ -6,13 +7,14 @@
 
 .elevator-box {
   $scale: 1;
-  $box-padding: 1.5em;
+  $box-padding-right: 1.5em;
+  $box-padding-left: 3em;
   $elevator-gap: 2em;
   $elevator-width: 2em;
 
   font-size: $scale * 4rem;
   margin: 5rem 0;
-  padding: 0 $box-padding;
+  padding: 0 $box-padding-right 0 $box-padding-left;
   box-shadow: sh.$black-strong-medium;
   background-color: palegoldenrod;
   border-radius: 2rem;
@@ -56,13 +58,42 @@
     }
   }
 
+  &__floor-number {
+    $number-scale: .4;
+    position: absolute;
+    font-size: $number-scale * 1em;
+    bottom: 2.5em;
+    left: .3 * math.div($box-padding-left, $number-scale);
+    transform: translateX(-50%);
+    background: g.$gray-light;
+    padding: .2em;
+    border-radius: .2em;
+    text-align: center;
+    box-shadow: sh.$black-light-small;
+    color: c.$gray-dark-2;
+
+    & > * {
+      text-shadow: sh.$black-normal-small;
+    }
+
+    h2 {
+      line-height: .8;
+      font-size: 1.8em;
+    }
+
+    h5 {
+      text-transform: uppercase;
+      font-size: .6em;
+    }
+  }
+
   &__panels {
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 0 calc($elevator-width + $box-padding);
+    padding: 0 calc($elevator-width + $box-padding-right) 0 calc($elevator-width + $box-padding-left);
     gap: $elevator-width;
   }
 

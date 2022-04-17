@@ -69,13 +69,21 @@
         </button>
       </div>
   
-      <button class="button-panel__button button-panel__button--submit"
+      <div class="button-panel__controls">
+        <button class="button-panel__button button-panel__button--cancel"
+                (click)="closePanel()"
+                type="button">
+          Cancel
+        </button>
+        
+        <button class="button-panel__button button-panel__button--submit"
               (click)="submitChoice()"
-              type="submit"
+              type="button"
               [ngClass]="{ disabled: floorChoice === null || floorChoice === startFloorNum }"
               [disabled]="!floorChoice">
         Submit
       </button>
+      </div>
     </section>
   </div>
 </article>

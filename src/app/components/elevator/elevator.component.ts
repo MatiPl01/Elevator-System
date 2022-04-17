@@ -8,6 +8,12 @@ import { ElevatorConfig } from 'src/app/types/elevator-config.type';
 import { Queue } from 'src/app/utils/data-structures/queue.data-structure';
 
 
+type StopData = {
+  floorNum: number,
+  noPassengers: number, // In an elevator
+  noWaiting: number    // For an elevator to come
+}
+
 @Component({
   selector: 'app-elevator',
   templateUrl: './elevator.component.html'
@@ -15,23 +21,23 @@ import { Queue } from 'src/app/utils/data-structures/queue.data-structure';
 export class ElevatorComponent implements OnInit, ISprite {
   @Input() config!: ElevatorConfig;
 
-  private readonly id;
-  private state = ElevatorState.IDLE;
-  private speed!: number;
-  private maxLoad!: number;
+  public ElevatorState = ElevatorState;
+  
+  public readonly id: string;
+  private _state = ElevatorState.IDLE;
   private _maxAvailableFloor!: number;
   private _minAvailableFloor!: number;
-  private stopDuration = 0;
-  private currentFloorNum = 0;
+  private _toggleDoorDuration!: number;
+  private speed!: number;
+  private maxLoad!: number;
+  private waitForPeopleDuration!: number;
+  private currentFloorNum!: number;
+  
   private stoppedStartTime = 0;
-  private nextFloors = new Queue();
+  private stopsQueue = new Queue();
   
-  private totalCost = 0;
-  private noPassengers = 0;
-  private leavingCountsMap = new Map<number, number>();
-
+  private timeout!: any;
   public bottom: number = 0;
-  
 
   constructor(private timeService: TimeService,
               public elevatorService: ElevatorService,
@@ -39,8 +45,16 @@ export class ElevatorComponent implements OnInit, ISprite {
     this.id = this.elevatorService.registerElevator(this);
   }
 
+  get state(): ElevatorState {
+    return this._state;
+  }
+
   get nextFloor(): number {
-    return this.nextFloors.first;
+    return (this.stopsQueue.first as StopData)?.floorNum;
+  }
+
+  get toggleDoorDuration(): number {
+    return this._toggleDoorDuration;
   }
 
   get maxAvailableFloor(): number {
@@ -54,7 +68,8 @@ export class ElevatorComponent implements OnInit, ISprite {
   ngOnInit(): void {
     this.speed = this.config.speed;
     this.maxLoad = this.config.maxLoad;
-    this.stopDuration = this.config.stopDuration;
+    this._toggleDoorDuration = this.config.toggleDoorDuration;
+    this.waitForPeopleDuration = this.config.waitForPeopleDuration;
     this.currentFloorNum = this.config.initialFloorNum;
     this._maxAvailableFloor = this.config.maxAvailableFloor;
     this._minAvailableFloor = this.config.minAvailableFloor;
@@ -64,32 +79,52 @@ export class ElevatorComponent implements OnInit, ISprite {
   }
 
   update(deltaTime: number) {
-    switch (this.state) {
+    switch (this._state) {
       case ElevatorState.MOVING:
         const sign = this.nextFloor < this.currentFloorNum ? -1 : 1;
         this.move(sign * this.calcDistance(deltaTime));
         break;
       case ElevatorState.STOPPED:
-        if (this.timeService.getElapsedTime(this.stoppedStartTime) >= this.stopDuration) {
-          if (!this.nextFloor) this.state = ElevatorState.IDLE;
-          this.startMoving();
+        const elapsed = this.timeService.getElapsedTime(this.stoppedStartTime);  
+        if (elapsed >= this.waitForPeopleDuration) {
+          if (!this.nextFloor) this._state = ElevatorState.IDLE;
+          else this._state = ElevatorState.CLOSE_DOOR;
+        }
+        break;
+      case ElevatorState.OPEN_DOOR:
+      case ElevatorState.CLOSE_DOOR:
+        if (!this.timeout) {
+          this.timeout = setTimeout(this.toggleDoor.bind(this), this._toggleDoorDuration * 1000);
         }
         break;
       case ElevatorState.IDLE:
-        if (this.nextFloor) this.startMoving();
+        if (this.nextFloor) this._state = ElevatorState.CLOSE_DOOR;
         break;
     }
   }
 
-  calcIncreaseOfETD(fromFloorNum: number, toFloorNum: number): number {
+  calcTotalCost(fromFloorNum: number, toFloorNum: number): number {
+    /**
+     * Assumptions:
+     * - the elevator does not turn back as long as there are still some 
+     * floors in the same direction in which it is going,
+     * - the elevator always stops for the same time,
+    */
+    // Find possible stops
+
+
     return 0; // TODO
   }
 
   addRoute(fromFloorNum: number, toFloorNum: number) {
     console.log("Elevator " + this.id + ' from ' + fromFloorNum + ' to ' + toFloorNum);
     // TODO -remove lines below and implement this method
-    this.nextFloors.enqueue(fromFloorNum);
-    this.nextFloors.enqueue(toFloorNum);
+    // this.nextFloors.enqueue(fromFloorNum);
+    this.stopsQueue.enqueue({
+      floorNum: toFloorNum,
+      noPassengers: 0,
+      noWaiting: 0
+    });
   }
 
   private calcDistanceFromBottom(floorNum: number): number {
@@ -103,7 +138,7 @@ export class ElevatorComponent implements OnInit, ISprite {
 
   private move(distance: number) {
     if (!this.nextFloor) {
-      this.state = ElevatorState.STOPPED;
+      this._state = ElevatorState.OPEN_DOOR;
       this.stoppedStartTime = this.timeService.getTime();
       return;
     }
@@ -114,13 +149,16 @@ export class ElevatorComponent implements OnInit, ISprite {
     if (Math.abs(this.bottom - nextBottom) < Math.abs(1.25 * distance)) {
       this.bottom = nextBottom;
       this.currentFloorNum = this.nextFloor;
-      this.nextFloors.dequeue();
+      this.stopsQueue.dequeue();
     }
   }
 
-  private startMoving() {
-    if (this.nextFloor && this.nextFloor != this.currentFloorNum) {
-      this.state = ElevatorState.MOVING;
-    } else this.nextFloors.dequeue();
+  private toggleDoor() {
+    if (this._state === ElevatorState.OPEN_DOOR) {
+      this._state = ElevatorState.STOPPED;
+    } else {
+      this._state = ElevatorState.MOVING;
+    }
+    this.timeout = null;
   }
 }

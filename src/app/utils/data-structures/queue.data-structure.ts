@@ -25,6 +25,22 @@ export class Queue {
     return this.head?.value;
   }
 
+  [Symbol.iterator]() {
+    let prev: Node | null = null;
+    let curr = this.head;
+
+    return {
+      next() {
+        [prev, curr] = [curr, curr?.next || null];
+
+        return {
+          value: prev?.value,
+          done: !prev
+        }
+      }
+    }
+  }
+
   enqueue(value: any) {
     const node = new Node(value);
     if (!this._length) this.head = this.tail = node;

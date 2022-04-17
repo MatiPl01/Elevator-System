@@ -10,6 +10,10 @@
     <ul class="elevator-box__floors">
       <li *ngFor="let floor of elevatorService.floorsConfig; let idx = index" class="elevator-box__floor"
         [ngStyle]="styles.floor[idx]">
+        <article class="elevator-box__floor-number">
+          <h2>{{ floor.number }}</h2> 
+          <h5>floor</h5>
+        </article>
         <ul class="elevator-box__panels">
           <li *ngFor="let _ of [].constructor(elevatorService.elevatorsConfig.length - 1)" class="elevator-box__panel">
             <article class="mini-panel" [routerLink]="['panel', floor.number]">

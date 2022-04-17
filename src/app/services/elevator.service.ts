@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ElevatorComponent } from "../components/elevator/elevator.component";
+import { Queue } from "../utils/data-structures/queue.data-structure";
 
 
 @Injectable({
@@ -14,16 +15,18 @@ export class ElevatorService {
       maxAvailableFloor: 10,
       maxLoad: 4,
       speed: 2,
-      stopDuration: 10,
-      initialFloorNum: 0
+      initialFloorNum: 0,
+      toggleDoorDuration: 2,
+      waitForPeopleDuration: 5
     },
     {
       minAvailableFloor: 10,
       maxAvailableFloor: 20,
       maxLoad: 3,
       speed: 1.5,
-      stopDuration: 10,
-      initialFloorNum: 10
+      initialFloorNum: 10,
+      toggleDoorDuration: 1.5,
+      waitForPeopleDuration: 6
     },
     {
       minAvailableFloor: -1,
@@ -31,7 +34,9 @@ export class ElevatorService {
       maxLoad: 3,
       speed: 1.75,
       stopDuration: 10,
-      initialFloorNum: 0
+      initialFloorNum: 0,
+      toggleDoorDuration: 2.5,
+      waitForPeopleDuration: 8
     }
   ];
 
@@ -294,6 +299,13 @@ export class ElevatorService {
   constructor() {
     this.calcFloorHeightSums();
     this.updateAvailableFloors();
+
+    const q = new Queue();
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+
+    console.log(...q);
   }
 
   registerElevator(elevator: ElevatorComponent): string {
@@ -327,7 +339,7 @@ export class ElevatorService {
     let minTimeIncrease = Infinity;
     let bestElevator = null;
     for (const elevator of availableElevators) {
-      const currentTimeIncrease = elevator.calcIncreaseOfETD(fromFloorNum, toFloorNum);
+      const currentTimeIncrease = elevator.calcTotalCost(fromFloorNum, toFloorNum);
       if (currentTimeIncrease < minTimeIncrease) {
         minTimeIncrease = currentTimeIncrease;
         bestElevator = elevator;

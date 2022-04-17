@@ -84,6 +84,7 @@
       }
     }
 
+    &--cancel,
     &--submit {
       color: c.$white;
       text-transform: uppercase;
@@ -93,17 +94,18 @@
       background: g.$primary;
       border-radius: 3rem;
       display: block;
-      margin: 2rem auto 1rem auto;
       text-shadow: sh.$black-strong-medium;
       transition: transform .2s;
+    }
 
+    &--submit {
       &:not(.disabled):active {
         transform: translateY(2px) scale(.99); 
       }
 
       &.disabled {
         cursor: not-allowed;
-        background: g.$gray;
+        background: g.$gray-light;
       }
     }
   }
@@ -111,6 +113,13 @@
   &__icon {
     fill: c.$primary-light;
     font-size: 2.4rem;
+  }
+
+  &__controls {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1rem 0;
   }
 
   &__buttons {
