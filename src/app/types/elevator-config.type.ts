@@ -4,5 +4,5 @@ export type ElevatorConfig = {
   maxLoad: number,
   speed: number, // seconds
   stopDuration: number,
-  initialFloor: number
+  initialFloorNum: number
 }

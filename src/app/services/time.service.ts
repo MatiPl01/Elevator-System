@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
   providedIn: 'root'
 })
 export class TimeService {
-  private static readonly TIME_MULTIPLIER = 3;
+  private static readonly TIME_MULTIPLIER = 5;
   private lastFrameTime = 0;
 
   constructor() {

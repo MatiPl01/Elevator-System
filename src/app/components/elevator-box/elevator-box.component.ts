@@ -37,18 +37,18 @@ export class ElevatorBoxComponent implements OnInit {
   }
 
   private updateFloorMap() {
-    for (let floor of this.elevatorService.floors) this.floorMap.set(floor.number, floor);
+    for (let floor of this.elevatorService.floorsConfig) this.floorMap.set(floor.number, floor);
   }
 
   private updateElevatorContainerStyles() {
-    for (const elevator of this.elevatorService.elevators) {
+    for (const elevator of this.elevatorService.elevatorsConfig) {
       let height = 0;
       for (let i = elevator.minAvailableFloor; i <= elevator.maxAvailableFloor; i++) {
         height += this.floorMap.get(i)?.height || 0;
       }
 
       let marginTop = 0;
-      for (let i = elevator.maxAvailableFloor + 1; i <= this.elevatorService.floors[this.elevatorService.floors.length - 1].number; i++) {
+      for (let i = elevator.maxAvailableFloor + 1; i <= this.elevatorService.floorsConfig[this.elevatorService.floorsConfig.length - 1].number; i++) {
         marginTop += this.floorMap.get(i)?.height || 0;
       }
 
@@ -60,7 +60,7 @@ export class ElevatorBoxComponent implements OnInit {
   }
 
   private updateFloorStyles() {
-    for (const floor of this.elevatorService.floors.reverse()) {
+    for (const floor of this.elevatorService.floorsConfig.reverse()) {
       this.styles.floor.push({
         height: `${floor.height}em`
       })

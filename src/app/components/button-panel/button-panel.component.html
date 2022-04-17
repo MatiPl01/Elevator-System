@@ -72,7 +72,7 @@
       <button class="button-panel__button button-panel__button--submit"
               (click)="submitChoice()"
               type="submit"
-              [ngClass]="{ disabled: !floorChoice }"
+              [ngClass]="{ disabled: floorChoice === null || floorChoice === startFloorNum }"
               [disabled]="!floorChoice">
         Submit
       </button>

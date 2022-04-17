@@ -15,18 +15,20 @@ import { Queue } from 'src/app/utils/data-structures/queue.data-structure';
 export class ElevatorComponent implements OnInit, ISprite {
   @Input() config!: ElevatorConfig;
 
+  private readonly id;
   private state = ElevatorState.IDLE;
   private speed!: number;
   private maxLoad!: number;
-  private maxAvailableFloor!: number;
-  private minAvailableFloor!: number;
-  private leavingCountsMap = new Map<number, number>();
-  private totalCost = 0;
-  private noPassengers = 0;
+  private _maxAvailableFloor!: number;
+  private _minAvailableFloor!: number;
   private stopDuration = 0;
-  private currentFloor = 0;
+  private currentFloorNum = 0;
   private stoppedStartTime = 0;
   private nextFloors = new Queue();
+  
+  private totalCost = 0;
+  private noPassengers = 0;
+  private leavingCountsMap = new Map<number, number>();
 
   public bottom: number = 0;
   
@@ -34,53 +36,65 @@ export class ElevatorComponent implements OnInit, ISprite {
   constructor(private timeService: TimeService,
               public elevatorService: ElevatorService,
               public animationService: AnimationService) {
-    // TODO - remove code below
-    this.nextFloors.enqueue(3);
-    this.nextFloors.enqueue(1);
-    this.nextFloors.enqueue(8);
-    this.nextFloors.enqueue(-1);
+    this.id = this.elevatorService.registerElevator(this);
+  }
+
+  get nextFloor(): number {
+    return this.nextFloors.first;
+  }
+
+  get maxAvailableFloor(): number {
+    return this._maxAvailableFloor;
+  }
+
+  get minAvailableFloor(): number {
+    return this._minAvailableFloor;
   }
 
   ngOnInit(): void {
     this.speed = this.config.speed;
     this.maxLoad = this.config.maxLoad;
     this.stopDuration = this.config.stopDuration;
-    this.currentFloor = this.config.initialFloor;
-    this.maxAvailableFloor = this.config.maxAvailableFloor;
-    this.minAvailableFloor = this.config.minAvailableFloor;
+    this.currentFloorNum = this.config.initialFloorNum;
+    this._maxAvailableFloor = this.config.maxAvailableFloor;
+    this._minAvailableFloor = this.config.minAvailableFloor;
 
-    this.bottom = this.elevatorService.getFloorHeight(this.currentFloor)!
-      - this.elevatorService.getFloorHeight(this.minAvailableFloor)!;
-
+    this.bottom = this.calcDistanceFromBottom(this.currentFloorNum);
     this.animationService.register(this);
   }
 
   update(deltaTime: number) {
     switch (this.state) {
-      case ElevatorState.UP:
-        this.move(this.calcDistance(deltaTime));
-        break;
-      case ElevatorState.DOWN:
-        this.move(-this.calcDistance(deltaTime));
+      case ElevatorState.MOVING:
+        const sign = this.nextFloor < this.currentFloorNum ? -1 : 1;
+        this.move(sign * this.calcDistance(deltaTime));
         break;
       case ElevatorState.STOPPED:
         if (this.timeService.getElapsedTime(this.stoppedStartTime) >= this.stopDuration) {
-          if (!this.nextFloors.length) this.state = ElevatorState.IDLE;
+          if (!this.nextFloor) this.state = ElevatorState.IDLE;
           this.startMoving();
         }
         break;
       case ElevatorState.IDLE:
-        if (this.nextFloors.length) this.startMoving();
+        if (this.nextFloor) this.startMoving();
         break;
     }
   }
 
-  addPerson(floorNum: number) {
-    const noLeaving = this.leavingCountsMap.get(floorNum) || 0;
-    // If there was nobody leaving at the specified floor,
-    // add the number of a floor to the nextFloors queue
-    if (!noLeaving) this.nextFloors.enqueue(floorNum);
-    this.leavingCountsMap.set(floorNum, noLeaving + 1);
+  calcIncreaseOfETD(fromFloorNum: number, toFloorNum: number): number {
+    return 0; // TODO
+  }
+
+  addRoute(fromFloorNum: number, toFloorNum: number) {
+    console.log("Elevator " + this.id + ' from ' + fromFloorNum + ' to ' + toFloorNum);
+    // TODO -remove lines below and implement this method
+    this.nextFloors.enqueue(fromFloorNum);
+    this.nextFloors.enqueue(toFloorNum);
+  }
+
+  private calcDistanceFromBottom(floorNum: number): number {
+    return this.elevatorService.getFloorHeight(floorNum)! 
+         - this.elevatorService.getFloorHeight(this.minAvailableFloor)!;
   }
 
   private calcDistance(time: number): number {
@@ -88,23 +102,25 @@ export class ElevatorComponent implements OnInit, ISprite {
   }
 
   private move(distance: number) {
-    this.bottom += distance;
-    
-    const nextFloor = this.nextFloors.first;
-    const nextHeight = this.elevatorService.getFloorHeight(nextFloor);
-    
-    if (Math.abs(this.bottom - nextHeight) < Math.abs(1.25 * distance)) {
-      this.bottom = nextHeight;
-      this.currentFloor = nextFloor;
-      this.nextFloors.dequeue();
+    if (!this.nextFloor) {
       this.state = ElevatorState.STOPPED;
       this.stoppedStartTime = this.timeService.getTime();
+      return;
+    }
+
+    this.bottom += distance;
+    const nextBottom = this.calcDistanceFromBottom(this.nextFloor);
+    
+    if (Math.abs(this.bottom - nextBottom) < Math.abs(1.25 * distance)) {
+      this.bottom = nextBottom;
+      this.currentFloorNum = this.nextFloor;
+      this.nextFloors.dequeue();
     }
   }
 
   private startMoving() {
-    if (this.nextFloors.first > this.currentFloor) this.state = ElevatorState.UP;
-    else if (this.nextFloors.first < this.currentFloor) this.state = ElevatorState.DOWN;
-    else this.nextFloors.dequeue();
+    if (this.nextFloor && this.nextFloor != this.currentFloorNum) {
+      this.state = ElevatorState.MOVING;
+    } else this.nextFloors.dequeue();
   }
 }

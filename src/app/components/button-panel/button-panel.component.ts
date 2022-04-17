@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ElevatorService } from 'src/app/services/elevator.service';
 
 @Component({
-  selector: 'app-button-panel[minAvailableFloor][maxAvailableFloor]', // Make attributes required
+  selector: 'app-button-panel',
   templateUrl: './button-panel.component.html'
 })
 export class ButtonPanelComponent implements OnInit {
@@ -11,11 +11,11 @@ export class ButtonPanelComponent implements OnInit {
 
   private readonly minAvailableFloor: number;
   private readonly maxAvailableFloor: number;
-  private readonly startFloorNum: number;
+  public readonly startFloorNum: number;
   public floorGroups: number[][] = [];
   public currentTabIdx: number = 0;
   public underlinedTabIdx = this.currentTabIdx;
-  public floorChoice!: number;
+  public floorChoice: number|null = null;
 
   constructor(private elevatorService: ElevatorService,
               private route: ActivatedRoute) {
@@ -61,6 +61,6 @@ export class ButtonPanelComponent implements OnInit {
   }
 
   submitChoice() {
-    console.log('choice', this.floorChoice)
+    if (this.floorChoice !== null) this.elevatorService.addRoute(this.startFloorNum, this.floorChoice);
   }
 }
