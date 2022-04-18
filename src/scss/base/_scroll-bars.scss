@@ -23,3 +23,24 @@
     background-color: c.$gray-dark-1;
   }
 }
+
+
+body {
+  ::-webkit-scrollbar {
+    width: 1rem;
+
+    &-thumb {
+      background: c.$gray-light-4;
+      border-radius: 1rem;
+    }
+
+    &-track {
+      background-color: transparent;
+      border-radius: 1rem;
+
+      &:hover {
+        background-color: c.$gray-dark-3;
+      }
+    }
+  }
+}

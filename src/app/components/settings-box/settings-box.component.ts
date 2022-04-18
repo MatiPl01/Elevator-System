@@ -34,9 +34,12 @@ export class SettingsBoxComponent {
   }
 
   changeScale(scale: number) {
-    const scrollRatio = (window.scrollY + window.innerHeight / 2) / document.body.offsetHeight;
+    const scrollYRatio = (window.scrollY + window.innerHeight / 2) / document.body.offsetHeight;
+    const scrollXRatio = (window.scrollX + window.innerWidth / 2) / document.body.offsetWidth;
     document.documentElement.style.setProperty('--scale', String(scale));
-    const scrollY = scrollRatio * document.body.offsetHeight - window.innerHeight / 2;
-    window.scrollTo({ top: scrollY });
+    const scrollY = scrollYRatio * document.body.offsetHeight - window.innerHeight / 2;
+    const scrollX = scrollXRatio * document.body.offsetWidth - window.innerWidth / 2;
+    window.scrollTo({ top: scrollY, left: scrollX });
+    document.body.scrollTop = scrollY;
   }
 }

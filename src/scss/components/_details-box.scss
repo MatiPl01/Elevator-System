@@ -1,0 +1,43 @@
+@use '../utils/colors' as c;
+@use '../utils/shadows' as sh;
+@use '../utils/extends' as *;
+
+
+.details-box {
+  @extend %content-box;
+  padding-right: 0;
+  padding-left: 0;
+
+  &__header {
+    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+  }
+  
+  &__heading {
+    color: c.$gray-light-1;
+    text-shadow: sh.$black-strong-small;
+  }
+  
+  &__elevators {
+    max-height: 50rem;
+    overflow-y: auto;
+  }
+  
+  &__elevators-heading {
+    color: c.$gray-light-2;
+    text-shadow: sh.$black-normal-small;
+    padding: 0 1.5rem;
+  }
+
+  &__elevators-list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  &__elevators-item {
+
+  }
+}

@@ -74,10 +74,6 @@
         transition: transform .3s ease-in-out;
         filter: drop-shadow(sh.$black-strong-small);
       }
-
-      &:hover .settings__button-icon {
-        transform: rotate(180deg);
-      }
     }
 
     &__container {
@@ -90,19 +86,22 @@
       visibility: hidden;
       transition: all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+  }
 
-    &__checkbox:checked + .settings__container {
-      transform: scale(1);
-      opacity: 1;
-      visibility: visible;
-    }
+  .settings__button:hover .settings__button-icon,
+  .details__button:hover .details__button-icon {
+    transform: rotate(180deg);
+  }
+
+
+  .settings__checkbox:checked + .settings__container,
+  .details__checkbox:checked + .details__container {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
   }
 
   .details__button {
-    left: calc(3rem + $toggle-button-size);
-
-    &:hover .details__button-icon {
-      transform: rotate(180deg);
-    }
+    left: calc($toggle-button-size + 3rem);
   }
 }

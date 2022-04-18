@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ElevatorComponent } from "../components/elevator/elevator.component";
+import { ElevatorConfig } from "../types/elevator-config.type";
 import { RouteData } from "../types/route-data.type";
 
 
@@ -11,8 +12,9 @@ export class ElevatorService {
 
   public readonly elevatorsConfig = [
     {
-      minAvailableFloor: 0,
-      maxAvailableFloor: 10,
+      id: 'A',
+      minFloorNum: 0,
+      maxFloorNum: 10,
       maxLoad: 4,
       speed: 2,
       idleFloorNum: 0,
@@ -20,8 +22,9 @@ export class ElevatorService {
       toggleDoorDuration: 2
     },
     {
-      minAvailableFloor: 10,
-      maxAvailableFloor: 20,
+      id: 'B',
+      minFloorNum: 10,
+      maxFloorNum: 20,
       maxLoad: 3,
       speed: 1.5,
       idleFloorNum: 10,
@@ -29,8 +32,9 @@ export class ElevatorService {
       toggleDoorDuration: 1.5
     },
     {
-      minAvailableFloor: -1,
-      maxAvailableFloor: 18,
+      id: 'C',
+      minFloorNum: -1,
+      maxFloorNum: 18,
       maxLoad: 3,
       speed: 1.5,
       idleFloorNum: 0,
@@ -290,14 +294,77 @@ export class ElevatorService {
     // }
   ];
 
-  private readonly elevators: ElevatorComponent[] = [];
+  private readonly _elevators: ElevatorComponent[] = [];
   public readonly floorHeights: number[] = [0];
-  private readonly minFloorNum = this.floorsConfig[0].number;
   private readonly availableFloors: { min: number, max: number }[] = [];
 
   constructor() {
     this.calcFloorHeightSums();
     this.updateAvailableFloors();
+
+    // TODO - remove me
+    setTimeout(() => {
+      this.addRoute(1, 7);
+      this.addRoute(9, 12);
+      this.addRoute(2, 11);
+      this.addRoute(2, 4);
+      this.addRoute(8, 6);
+      this.addRoute(20, 11);
+      this.addRoute(11, 19);
+      this.addRoute(-1, 16);
+    }, 10);
+  }
+
+  get elevators(): ElevatorComponent[] {
+    return this._elevators;
+  }
+
+  get minFloorNum(): number {
+    return this.floorsConfig[0].number;
+  }
+
+  get maxFloorNum(): number { // TODO - remove these getters below
+    return this.floorsConfig[this.floorsConfig.length - 1].number;
+  }
+
+  get maxPossibleLoad(): number {
+    return 8;
+  }
+
+  get minPossibleSpeed(): number {
+    return .25;
+  }
+
+  get maxPossibleSpeed(): number {
+    return 5;
+  }
+
+  get minPossibleStopDuration(): number {
+    return 2;
+  }
+
+  get maxPossibleStopDuration(): number {
+    return 20;
+  }
+
+  get minPossibleDoorToggleDuration(): number {
+    return 1;
+  }
+
+  get maxPossibleDoorToggleDuration(): number {
+    return 5;
+  }
+
+  get defaultElevatorConfig(): ElevatorConfig {
+    return {
+      minFloorNum: this.floorsConfig[0].number,
+      maxFloorNum: this.floorsConfig[this.floorsConfig.length - 1].number,
+      idleFloorNum: this.floorsConfig[0].number,
+      maxLoad: 6,
+      speed: 2,
+      stopDuration: 5,
+      toggleDoorDuration: 2
+    }
   }
 
   registerElevator(elevator: ElevatorComponent): string {
@@ -321,10 +388,10 @@ export class ElevatorService {
   addRoute(fromFloorNum: number, toFloorNum: number) {
     // Find elevators that are available between specified floors
     const availableElevators = this.elevators.filter((elevator: ElevatorComponent) => {
-      return elevator.minAvailableFloor <= fromFloorNum
-        && fromFloorNum <= elevator.maxAvailableFloor
-        && elevator.minAvailableFloor <= toFloorNum
-        && toFloorNum <= elevator.maxAvailableFloor;
+      return elevator.minFloorNum <= fromFloorNum
+        && fromFloorNum <= elevator.maxFloorNum
+        && elevator.minFloorNum <= toFloorNum
+        && toFloorNum <= elevator.maxFloorNum;
     })
 
     // Find the lowest total time route
@@ -347,59 +414,6 @@ export class ElevatorService {
     else alert("Could not find the best elevator");
   }
 
-  // addRoute(fromFloorNum: number, toFloorNum: number) {
-  //   // Find elevators that are available between specified floors
-  //   const availableElevators = this.elevators.filter((elevator: ElevatorComponent) => {
-  //     return elevator.minAvailableFloor <= fromFloorNum 
-  //         && fromFloorNum <= elevator.maxAvailableFloor
-  //         && elevator.minAvailableFloor <= toFloorNum
-  //         && toFloorNum <= elevator.maxAvailableFloor;
-  //   })
-
-  //   // Find the lowest total time route
-  //   let bestRoute!: RouteData;
-  //   let bestElevator!: ElevatorComponent;
-
-  //   for (const elevator of availableElevators) {
-  //     const elevatorBestRoute = elevator.findBestRoute(fromFloorNum, toFloorNum);
-
-  //     /**
-  //      * Update the bestRoute if one of the following conditions is satisfied:
-  //      *  1) The best route has not been saved yet,
-  //      *  2) The best route doesn't finish on the toFloorNum and the elevator's
-  //      *     best route has lower total time,
-  //      *  3) The best route doesn't finish on the toFloorNum but the elevator's
-  //      *     best route finishes on the toFloorNum (destination floor) and the
-  //      *     elevator is not full (bestTime < Infinity) (In such way we try to  
-  //      *     group all passengers going to the same floor in one elevator),
-  //      *  4) The best route finishes on the toFloorNum (destination floor)
-  //      *     and the current elevator's best route also finishes on the toFloorNum
-  //      *     but has lower total time,
-  //      */
-  //     let foundBetterRoute = false;
-  //     // 1)
-  //     if (!bestRoute) foundBetterRoute = true;
-  //     else if (!bestRoute.headsToTargetFloor) {
-  //       // 2)
-  //       if (elevatorBestRoute.totalTime < bestRoute.totalTime) foundBetterRoute = true;
-  //       // 3)
-  //       else if (elevatorBestRoute.headsToTargetFloor && elevatorBestRoute.totalTime < Infinity) foundBetterRoute = true;
-  //     } else {
-  //       // 4)
-  //       if (elevatorBestRoute.headsToTargetFloor && elevatorBestRoute.totalTime < bestRoute.totalTime) foundBetterRoute = true;
-  //     }
-      
-  //     if (foundBetterRoute) {
-  //       bestRoute = elevatorBestRoute;
-  //       bestElevator = elevator;
-  //     }
-  //   }
-    
-  //   // Add a route to the elevator
-  //   if (bestElevator) bestElevator.addRoute(bestRoute);
-  //   else alert("Could not find the best elevator");
-  // }
-
   private calcFloorHeightSums() {
     for (let i = 1; i < this.floorsConfig.length; i++) {
       const { height: prevHeight } = this.floorsConfig[i - 1];
@@ -414,11 +428,11 @@ export class ElevatorService {
     }
     
     for (const elevator of this.elevatorsConfig) {
-      const minIdx = elevator.minAvailableFloor - this.minFloorNum;
-      const maxIdx = elevator.maxAvailableFloor - this.minFloorNum;
+      const minIdx = elevator.minFloorNum - this.minFloorNum;
+      const maxIdx = elevator.maxFloorNum - this.minFloorNum;
       for (let i = minIdx; i <= maxIdx; i++) {
-        this.availableFloors[i].min = Math.min(this.availableFloors[i].min, elevator.minAvailableFloor);
-        this.availableFloors[i].max = Math.max(this.availableFloors[i].max, elevator.maxAvailableFloor);
+        this.availableFloors[i].min = Math.min(this.availableFloors[i].min, elevator.minFloorNum);
+        this.availableFloors[i].max = Math.max(this.availableFloors[i].max, elevator.maxFloorNum);
       }
     }
   }

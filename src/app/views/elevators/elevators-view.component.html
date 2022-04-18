@@ -1,5 +1,5 @@
 <main class="elevators">
-  <app-elevator-box></app-elevator-box>
+  <app-elevators></app-elevators>
 
   <section class="overlay" [ngClass]="{ hidden: !outlet.isActivated }">
     <div class="overlay__outlet">
@@ -33,9 +33,9 @@
       </label>
     </button>
     
-    <input type="checkbox" name="details-toggle" id="details-toggle" class="details__checkbox" #checkbox (change)="uncheckOtherCheckboxes($event)">
+    <input type="checkbox" name="details-toggle" id="details-toggle" class="details__checkbox" #checkbox (change)="uncheckOtherCheckboxes($event)" checked>
     <section class="details__container">
-      
+      <app-details-box></app-details-box>
     </section>
   </section>
 </main>

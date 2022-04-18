@@ -1,13 +1,10 @@
 @use '../utils/shadows' as sh;
 @use '../utils/colors' as c;
+@use '../utils/extends' as *;
 
 
 .settings-box {
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: sh.$black-normal-large;
-  background-color: rgba(c.$gray-dark-4, .9);
-  padding: 1.25rem 1.5rem;
+  @extend %content-box;
   width: 20rem;
 
   &__header {

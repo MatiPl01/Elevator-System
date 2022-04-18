@@ -1,9 +1,9 @@
 export type ElevatorConfig = {
-  minAvailableFloor: number,
-  maxAvailableFloor: number,
-  maxLoad: number,
-  speed: number, // seconds
-  stopDuration: number
+  minFloorNum: number,
+  maxFloorNum: number,
   idleFloorNum: number,
-  toggleDoorDuration: number,
+  maxLoad: number,
+  speed: number, // m/s
+  stopDuration: number // seconds
+  toggleDoorDuration: number, // seconda
 }

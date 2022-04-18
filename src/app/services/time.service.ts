@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 export class TimeService {
   public static readonly MIN_TIME_MULTIPLIER = .25;
   public static readonly MAX_TIME_MULTIPLIER = 10;
-  private _timeRatio = 1;
+  private _timeRatio = 2.5;
   private lastFrameTime = 0;
 
   constructor() {

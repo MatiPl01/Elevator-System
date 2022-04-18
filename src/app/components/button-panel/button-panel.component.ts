@@ -9,8 +9,8 @@ import { ElevatorService } from 'src/app/services/elevator.service';
 export class ButtonPanelComponent implements OnInit {
   private static readonly MAX_BUTTONS_PER_SCREEN = 16;
 
-  private readonly minAvailableFloor: number;
-  private readonly maxAvailableFloor: number;
+  private readonly minFloorNum: number;
+  private readonly maxFloorNum: number;
   public readonly startFloorNum: number;
   public floorGroups: number[][] = [];
   public currentTabIdx: number = 0;
@@ -22,8 +22,8 @@ export class ButtonPanelComponent implements OnInit {
               private router: Router) {
     this.startFloorNum = +this.route.snapshot.params['floorNum'];
     const { min, max } = this.elevatorService.getAvailableFloorsFrom(this.startFloorNum);
-    this.minAvailableFloor = min;
-    this.maxAvailableFloor = max;
+    this.minFloorNum = min;
+    this.maxFloorNum = max;
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class ButtonPanelComponent implements OnInit {
   private groupFloors() {
     let group: number[] = [];
     
-    for (let i = this.minAvailableFloor; i <= this.maxAvailableFloor; i++) {
+    for (let i = this.minFloorNum; i <= this.maxFloorNum; i++) {
       group.push(i);
       if (group.length === ButtonPanelComponent.MAX_BUTTONS_PER_SCREEN) {
         this.floorGroups.push(group);
