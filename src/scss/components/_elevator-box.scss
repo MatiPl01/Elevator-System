@@ -6,13 +6,12 @@
 
 
 .elevator-box {
-  $scale: 1;
   $box-padding-right: 1.5em;
   $box-padding-left: 3em;
   $elevator-gap: 2em;
   $elevator-width: 2em;
 
-  font-size: $scale * 4rem;
+  font-size: calc(var(--scale) * 4rem);
   margin: 5rem 0;
   padding: 0 $box-padding-right 0 $box-padding-left;
   box-shadow: sh.$black-strong-medium;

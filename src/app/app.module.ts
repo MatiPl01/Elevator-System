@@ -8,7 +8,9 @@ import { ElevatorBoxComponent } from './components/elevator-box/elevator-box.com
 import { ElevatorComponent } from './components/elevator/elevator.component';
 ElevatorBoxComponent
 import { ElevatorsViewComponent } from './views/elevators/elevators-view.component';
-ElevatorsViewComponent
+import { SettingsBoxComponent } from './components/settings-box/settings-box.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { RangeSliderComponent } from './components/range-slider/range-slider.component';
 
 
 @NgModule({
@@ -17,11 +19,14 @@ ElevatorsViewComponent
     ButtonPanelComponent,
     ElevatorComponent,
     ElevatorBoxComponent,
-    ElevatorsViewComponent
+    ElevatorsViewComponent,
+    SettingsBoxComponent,
+    RangeSliderComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

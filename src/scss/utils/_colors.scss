@@ -13,6 +13,7 @@ $gray-dark-4: #575757;
 
 $primary-light: #a6cf6a;
 $primary-dark: #86c38d;
+$primary: mix($primary-light, $primary-dark);
 
 $elevator-lamp: #FFEC91;
 $elevator-box-wall: palegoldenrod;

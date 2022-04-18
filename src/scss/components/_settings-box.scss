@@ -1,0 +1,46 @@
+@use '../utils/shadows' as sh;
+@use '../utils/colors' as c;
+
+
+.settings-box {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: sh.$black-normal-large;
+  background-color: rgba(c.$gray-dark-4, .9);
+  padding: 1.25rem 1.5rem;
+  width: 20rem;
+
+  &__header {
+    margin-bottom: 1.5rem;
+  }
+
+  &__heading {
+    color: c.$gray-light-1;
+    text-shadow: sh.$black-strong-small;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__icon {
+    font-size: 2.4rem;
+    fill: c.$primary;
+    transition: fill .3s ease;
+    filter: drop-shadow(sh.$black-strong-small);
+  }
+
+  &__button.disabled &__icon {
+    fill: c.$gray-light-4;
+    cursor: not-allowed;
+  }
+
+  &__slider-title {
+    margin-top: 1.5rem;
+    color: c.$gray-light-2;
+    text-shadow: sh.$black-normal-medium;
+  }
+}

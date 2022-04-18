@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { ElevatorComponent, RouteData } from "../components/elevator/elevator.component";
+import { ElevatorComponent } from "../components/elevator/elevator.component";
+import { RouteData } from "../types/route-data.type";
 
 
 @Injectable({
@@ -18,24 +19,24 @@ export class ElevatorService {
       stopDuration: 5,
       toggleDoorDuration: 2
     },
-    // {
-    //   minAvailableFloor: 10,
-    //   maxAvailableFloor: 20,
-    //   maxLoad: 3,
-    //   speed: 1.5,
-    //   idleFloorNum: 10,
-    //   stopDuration: 6,
-    //   toggleDoorDuration: 1.5
-    // },
-    // {
-    //   minAvailableFloor: -1,
-    //   maxAvailableFloor: 18,
-    //   maxLoad: 3,
-    //   speed: 1.5,
-    //   idleFloorNum: 0,
-    //   stopDuration: 6,
-    //   toggleDoorDuration: 1.5
-    // }
+    {
+      minAvailableFloor: 10,
+      maxAvailableFloor: 20,
+      maxLoad: 3,
+      speed: 1.5,
+      idleFloorNum: 10,
+      stopDuration: 6,
+      toggleDoorDuration: 1.5
+    },
+    {
+      minAvailableFloor: -1,
+      maxAvailableFloor: 18,
+      maxLoad: 3,
+      speed: 1.5,
+      idleFloorNum: 0,
+      stopDuration: 6,
+      toggleDoorDuration: 1.5
+    }
   ];
 
   public readonly floorsConfig = [
@@ -320,10 +321,10 @@ export class ElevatorService {
   addRoute(fromFloorNum: number, toFloorNum: number) {
     // Find elevators that are available between specified floors
     const availableElevators = this.elevators.filter((elevator: ElevatorComponent) => {
-      return elevator.minAvailableFloor <= fromFloorNum 
-          && fromFloorNum <= elevator.maxAvailableFloor
-          && elevator.minAvailableFloor <= toFloorNum
-          && toFloorNum <= elevator.maxAvailableFloor;
+      return elevator.minAvailableFloor <= fromFloorNum
+        && fromFloorNum <= elevator.maxAvailableFloor
+        && elevator.minAvailableFloor <= toFloorNum
+        && toFloorNum <= elevator.maxAvailableFloor;
     })
 
     // Find the lowest total time route
@@ -340,11 +341,64 @@ export class ElevatorService {
         bestElevator = elevator;
       }
     }
-    
+
     // Add a route to the elevator
     if (bestElevator) bestElevator.addRoute(bestRoute);
     else alert("Could not find the best elevator");
   }
+
+  // addRoute(fromFloorNum: number, toFloorNum: number) {
+  //   // Find elevators that are available between specified floors
+  //   const availableElevators = this.elevators.filter((elevator: ElevatorComponent) => {
+  //     return elevator.minAvailableFloor <= fromFloorNum 
+  //         && fromFloorNum <= elevator.maxAvailableFloor
+  //         && elevator.minAvailableFloor <= toFloorNum
+  //         && toFloorNum <= elevator.maxAvailableFloor;
+  //   })
+
+  //   // Find the lowest total time route
+  //   let bestRoute!: RouteData;
+  //   let bestElevator!: ElevatorComponent;
+
+  //   for (const elevator of availableElevators) {
+  //     const elevatorBestRoute = elevator.findBestRoute(fromFloorNum, toFloorNum);
+
+  //     /**
+  //      * Update the bestRoute if one of the following conditions is satisfied:
+  //      *  1) The best route has not been saved yet,
+  //      *  2) The best route doesn't finish on the toFloorNum and the elevator's
+  //      *     best route has lower total time,
+  //      *  3) The best route doesn't finish on the toFloorNum but the elevator's
+  //      *     best route finishes on the toFloorNum (destination floor) and the
+  //      *     elevator is not full (bestTime < Infinity) (In such way we try to  
+  //      *     group all passengers going to the same floor in one elevator),
+  //      *  4) The best route finishes on the toFloorNum (destination floor)
+  //      *     and the current elevator's best route also finishes on the toFloorNum
+  //      *     but has lower total time,
+  //      */
+  //     let foundBetterRoute = false;
+  //     // 1)
+  //     if (!bestRoute) foundBetterRoute = true;
+  //     else if (!bestRoute.headsToTargetFloor) {
+  //       // 2)
+  //       if (elevatorBestRoute.totalTime < bestRoute.totalTime) foundBetterRoute = true;
+  //       // 3)
+  //       else if (elevatorBestRoute.headsToTargetFloor && elevatorBestRoute.totalTime < Infinity) foundBetterRoute = true;
+  //     } else {
+  //       // 4)
+  //       if (elevatorBestRoute.headsToTargetFloor && elevatorBestRoute.totalTime < bestRoute.totalTime) foundBetterRoute = true;
+  //     }
+      
+  //     if (foundBetterRoute) {
+  //       bestRoute = elevatorBestRoute;
+  //       bestElevator = elevator;
+  //     }
+  //   }
+    
+  //   // Add a route to the elevator
+  //   if (bestElevator) bestElevator.addRoute(bestRoute);
+  //   else alert("Could not find the best elevator");
+  // }
 
   private calcFloorHeightSums() {
     for (let i = 1; i < this.floorsConfig.length; i++) {

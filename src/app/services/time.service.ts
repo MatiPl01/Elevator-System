@@ -4,19 +4,31 @@ import { Injectable } from "@angular/core";
   providedIn: 'root'
 })
 export class TimeService {
-  private static readonly TIME_MULTIPLIER = 5;
+  public static readonly MIN_TIME_MULTIPLIER = .25;
+  public static readonly MAX_TIME_MULTIPLIER = 10;
+  private _timeRatio = 1;
   private lastFrameTime = 0;
 
   constructor() {
     this.lastFrameTime = this.getTime();
   }
 
+  get timeRatio(): number {
+    return this._timeRatio;
+  }
+
+  set timeRatio(ratio: number) {
+    if (ratio >= TimeService.MIN_TIME_MULTIPLIER && ratio <= TimeService.MAX_TIME_MULTIPLIER) {
+      this._timeRatio = ratio;
+    }
+  }
+
   convertDuration(realDuration: number): number {
-    return realDuration / TimeService.TIME_MULTIPLIER;
+    return realDuration / this._timeRatio;
   }
 
   getElapsedTime(startTime: number): number {
-    return (this.getTime() - startTime) * TimeService.TIME_MULTIPLIER;
+    return (this.getTime() - startTime) * this._timeRatio;
   }
 
   newFrameTime(): number {

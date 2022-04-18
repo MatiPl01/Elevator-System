@@ -5,41 +5,9 @@ import { AnimationService } from 'src/app/services/animation.service';
 import { ElevatorService } from 'src/app/services/elevator.service';
 import { TimeService } from 'src/app/services/time.service';
 import { ElevatorConfig } from 'src/app/types/elevator-config.type';
+import { RouteData } from 'src/app/types/route-data.type';
+import { NextFloorData } from 'src/app/types/next-floor-data.type';
 
-
-type NextFloorData = {
-  // Floor number
-  floorNum: number,
-  
-  details?: {
-    // Number of people leaving the elevator on the floorNum floor
-    noLeaving: number,
-    // Number of people entering the elevator on the floorNum floor
-    noEntering: number,
-    // Number of people waiting inside the elevator on the floorNum floor
-    noInside: number
-  }
-}
-
-export type RouteData = {
-  // The total time increase of each elevator passenger caused by the
-  // addition of the new passenger's route
-  totalTime: number,
-  // Index where the fromFloorNumber will be inserted (if there is not
-  // that floor yet)
-  enterIdx: number,
-  // Index where the toFloorNum will be inserted (if there is not
-  // that floor yet)
-  leaveIdx: number,
-  // Number of the floor where the new passenger will enter the elevator
-  fromFloorNum: number,
-  // Number of the floor where the new passenger will leave the elevator
-  toFloorNum: number,
-  // Boolean value indicating if there is already some elevator's route
-  // that ends on the toFloorNum floor (used for grouping people who
-  // will leave the elevator on the same floor)
-  stopsAtTargetFloor: boolean
-}
 
 @Component({
   selector: 'app-elevator',
@@ -61,13 +29,11 @@ export class ElevatorComponent implements OnInit, ISprite {
   private idleFloorNum!: number;
   private currentFloorNum!: number;
   
-  private stoppedStartTime = 0;
-
   private nextFloors: NextFloorData[] = [{ floorNum: NaN }];
-
   
-  private timeout!: any;
   public bottom: number = 0;
+  private timeout!: any;
+  private stoppedStartTime = 0;
 
   constructor(public timeService: TimeService,
               public elevatorService: ElevatorService,
@@ -261,8 +227,7 @@ export class ElevatorComponent implements OnInit, ISprite {
       enterIdx, 
       leaveIdx,
       fromFloorNum,
-      toFloorNum,
-      stopsAtTargetFloor: this.nextFloors[leaveIdx]?.floorNum === toFloorNum
+      toFloorNum    
     };
   }
 
@@ -327,9 +292,6 @@ export class ElevatorComponent implements OnInit, ISprite {
 
     this.nextFloors[0].floorNum = NaN;
     this.nextFloors.pop();
-
-    // console.log(...this.nextFloors)
-    // console.log(...res)
 
     return res;
   }

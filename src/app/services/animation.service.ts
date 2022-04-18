@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { AnimationState } from "../enums/animation-state.enum";
 import { ISprite } from "../interfaces/sprite.interface";
 import { TimeService } from "./time.service";
 
@@ -7,27 +8,44 @@ import { TimeService } from "./time.service";
   providedIn: 'root'
 })
 export class AnimationService {
-  private static readonly FPS = 60;
+  private static readonly FPS = 144;
   private readonly sprites: ISprite[] = [];
+  private lastFrameTime: number = 0;
+  private _state = AnimationState.PAUSED;
   
   constructor(private timeService: TimeService) {
-    this.run();
+    this.lastFrameTime = this.timeService.getTime();
+    this.play();
+  }
+
+  get state(): AnimationState {
+    return this._state;
+  }
+
+  play() {
+    if (this._state === AnimationState.PAUSED) {
+      this._state = AnimationState.PLAYING;
+      this.lastFrameTime = this.timeService.getTime();
+      requestAnimationFrame(this.updateSprites.bind(this));
+    }
+  }
+
+  pause() {
+    this._state = AnimationState.PAUSED;
   }
 
   register(sprite: ISprite) {
     this.sprites.push(sprite);
   }
 
-  private run() {
-    requestAnimationFrame(this.updateSprites.bind(this));
-  }
-
   private updateSprites() {
-    const elapsed = this.timeService.newFrameTime();
-    if (elapsed > 1 / AnimationService.FPS) {
-      this.sprites.forEach((sprite: ISprite) => sprite.update(elapsed));
+    if (this._state === AnimationState.PAUSED) return;
+    const elapsed = this.timeService.getTime() - this.lastFrameTime;
+    if (elapsed >= 1 / AnimationService.FPS) {
+      const modifiedElapsed = this.timeService.getElapsedTime(this.lastFrameTime);
+      this.sprites.forEach((sprite: ISprite) => sprite.update(modifiedElapsed));
+      this.lastFrameTime = this.timeService.getTime();
     }
-
     requestAnimationFrame(this.updateSprites.bind(this));
   }
 }

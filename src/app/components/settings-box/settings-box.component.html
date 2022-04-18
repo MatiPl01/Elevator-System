@@ -1,0 +1,51 @@
+<article class="settings-box">
+  <header class="settings-box__header">
+    <h2 class="settings-box__heading">Settings</h2>
+  </header>
+
+  <section class="settings-box__buttons">
+    <button class="settings-box__button settings-box__button--play"
+            (click)="playAnimation()"
+            [ngClass]="{ disabled: isPlayingAnimation }"
+            [disabled]="isPlayingAnimation">
+      <svg class="settings-box__icon">
+        <use href="/assets/icons/icons.svg#play"></use>
+      </svg>
+    </button>
+
+    <button class="settings-box__button settings-box__button--pause"
+            (click)="pauseAnimation()"
+            [ngClass]="{ disabled: !isPlayingAnimation }"
+            [disabled]="!isPlayingAnimation">
+      <svg class="settings-box__icon">
+        <use href="/assets/icons/icons.svg#pause"></use>
+      </svg>
+    </button>
+  </section>
+
+  <div class="settings-box__slider">
+    <h3 class="settings-box__slider-title">
+      Time ratio
+    </h3>
+    <app-range-slider
+      [min]="TimeService.MIN_TIME_MULTIPLIER"
+      [max]="TimeService.MAX_TIME_MULTIPLIER"
+      [step]=".05"
+      [default]="timeService.timeRatio"
+      (valueChange)="changeTimeRatio($event)"
+    ></app-range-slider>
+  </div>
+
+  <div class="settings-box__slider">
+    <h3 class="settings-box__slider-title">
+      Scale
+    </h3>
+    <app-range-slider
+      [min]="MIN_SCALE"
+      [max]="MAX_SCALE"
+      [step]="SCALE_STEP"
+      [default]="1"
+      (valueChange)="changeScale($event)"
+    ></app-range-slider>
+  </div>
+</article>
