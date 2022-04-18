@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ElevatorService } from 'src/app/services/elevator.service';
 import { FloorConfig } from 'src/app/types/floor-config.type';
 
 
 type ElevatorContainerStyle = {
   height: string,
-  'margin-top': string
+  'margin-top': string,
+  'margin-bottom': string
 }
 
 type FloorStyle = {
@@ -21,27 +22,34 @@ type Styles = {
   selector: 'app-elevator-box',
   templateUrl: './elevator-box.component.html'
 })
-export class ElevatorBoxComponent implements OnInit {
+export class ElevatorBoxComponent {
   private readonly floorMap = new Map<number, FloorConfig>();
   public readonly styles: Styles = {
     elevatorContainer: [],
     floor: []
   }
+  public maxFloorNum: number = -Infinity;
 
-  constructor(public elevatorService: ElevatorService) {}
-
-  ngOnInit(): void {
-    this.updateFloorMap();
+  constructor(public elevatorService: ElevatorService) {
+    this.updateFloors();
     this.updateElevatorContainerStyles();
     this.updateFloorStyles();
   }
 
-  private updateFloorMap() {
-    for (let floor of this.elevatorService.floorsConfig) this.floorMap.set(floor.number, floor);
+  private updateFloors() {
+    for (let floor of this.elevatorService.floorsConfig) {
+      if (floor.number > this.maxFloorNum) this.maxFloorNum = floor.number;
+      this.floorMap.set(floor.number, floor);
+    }
   }
 
   private updateElevatorContainerStyles() {
     for (const elevator of this.elevatorService.elevatorsConfig) {
+      let marginBottom = 0;
+      for (let i = this.elevatorService.floorsConfig[0].number; i < elevator.minAvailableFloor; i++) {
+        marginBottom += this.floorMap.get(i)?.height || 0;
+      }
+
       let height = 0;
       for (let i = elevator.minAvailableFloor; i <= elevator.maxAvailableFloor; i++) {
         height += this.floorMap.get(i)?.height || 0;
@@ -54,7 +62,8 @@ export class ElevatorBoxComponent implements OnInit {
 
       this.styles.elevatorContainer.push({
         height: `${height}em`,
-        'margin-top': `${marginTop}em`
+        'margin-top': `${marginTop}em`,
+        'margin-bottom': `${marginBottom}em`
       });
     }
   }

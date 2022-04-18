@@ -16,7 +16,7 @@
   margin: 5rem 0;
   padding: 0 $box-padding-right 0 $box-padding-left;
   box-shadow: sh.$black-strong-medium;
-  background-color: palegoldenrod;
+  background-color: c.$elevator-box-wall;
   border-radius: 2rem;
   position: relative;
   overflow: hidden;
@@ -31,7 +31,7 @@
   }
 
   &__elevator-container {
-    background-color: darken(palegoldenrod, 50%);
+    background-color: c.$elevator-container;
     box-shadow: inset 0 0 .5em rgba(c.$black, .5);
     border-radius: 1rem;
     padding: .35rem;
@@ -93,7 +93,7 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 0 calc($elevator-width + $box-padding-right) 0 calc($elevator-width + $box-padding-left);
+    padding-left: calc($elevator-width + $box-padding-left);
     gap: $elevator-width;
   }
 

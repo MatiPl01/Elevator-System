@@ -18,24 +18,24 @@ export class ElevatorService {
       stopDuration: 5,
       toggleDoorDuration: 2
     },
-    {
-      minAvailableFloor: 10,
-      maxAvailableFloor: 20,
-      maxLoad: 3,
-      speed: 1.5,
-      idleFloorNum: 10,
-      stopDuration: 6,
-      toggleDoorDuration: 1.5
-    },
-    {
-      minAvailableFloor: -1,
-      maxAvailableFloor: 18,
-      maxLoad: 3,
-      speed: 1.5,
-      idleFloorNum: 0,
-      stopDuration: 6,
-      toggleDoorDuration: 1.5
-    }
+    // {
+    //   minAvailableFloor: 10,
+    //   maxAvailableFloor: 20,
+    //   maxLoad: 3,
+    //   speed: 1.5,
+    //   idleFloorNum: 10,
+    //   stopDuration: 6,
+    //   toggleDoorDuration: 1.5
+    // },
+    // {
+    //   minAvailableFloor: -1,
+    //   maxAvailableFloor: 18,
+    //   maxLoad: 3,
+    //   speed: 1.5,
+    //   idleFloorNum: 0,
+    //   stopDuration: 6,
+    //   toggleDoorDuration: 1.5
+    // }
   ];
 
   public readonly floorsConfig = [
@@ -310,9 +310,10 @@ export class ElevatorService {
 
   getAvailableFloorsFrom(fromFloorNum: number): { min: number, max: number } {
     const idx = fromFloorNum - this.minFloorNum;
+
     return {
-      min: this.availableFloors[idx]?.min || Infinity,
-      max: this.availableFloors[idx]?.max || -Infinity
+      min: this.availableFloors[idx].min,
+      max: this.availableFloors[idx].max
     }
   }
 
@@ -332,9 +333,8 @@ export class ElevatorService {
 
     for (const elevator of availableElevators) {
       const elevatorBestRoute = elevator.findBestRoute(fromFloorNum, toFloorNum);
-      console.log(elevator.id, elevatorBestRoute)
 
-      if (elevatorBestRoute.totalTime < bestTime) {
+      if (!bestRoute || elevatorBestRoute.totalTime < bestTime) {
         bestTime = elevatorBestRoute.totalTime;
         bestRoute = elevatorBestRoute;
         bestElevator = elevator;
@@ -343,7 +343,7 @@ export class ElevatorService {
     
     // Add a route to the elevator
     if (bestElevator) bestElevator.addRoute(bestRoute);
-    else console.error("Could not find the best elevator");
+    else alert("Could not find the best elevator");
   }
 
   private calcFloorHeightSums() {

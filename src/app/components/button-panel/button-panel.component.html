@@ -80,7 +80,7 @@
               (click)="submitChoice()"
               type="button"
               [ngClass]="{ disabled: floorChoice === null || floorChoice === startFloorNum }"
-              [disabled]="!floorChoice">
+              [disabled]="floorChoice === null || floorChoice === startFloorNum">
         Submit
       </button>
       </div>
