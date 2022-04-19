@@ -1,7 +1,7 @@
 <article class="elevator-details">
   <header class="elevator-details__header">
     <section class="elevator-details__id">
-      <h2>{{ elevator.id }}</h2>
+      <h2>{{ id }}</h2>
       <h5>elevator</h5>
     </section>
 
@@ -14,14 +14,14 @@
       </button>
       
       <h3 class="elevator-details__state">
-        {{ elevator.state }}
+        {{ elevator.component?.state }}
       </h3>
     </div>
   </header>
 
   <section class="elevator-details__stops">
     <ul class="elevator-details__stops-list">
-      <li *ngFor="let nextFloor of elevator.nextFloors"
+      <li *ngFor="let nextFloor of elevator.component?.nextFloors || []"
           class="elevator-details__stop">
         <article class="elevator-stop">
           <p class="elevator-stop__number">
@@ -54,8 +54,8 @@
                type="number" 
                name="min-floor" 
                id="min-floor" 
-               [min]="elevatorService.minFloorNum" 
-               [max]="elevatorService.maxFloorNum" 
+               [min]="defaultsConfig.minPossibleFloorNum" 
+               [max]="defaultsConfig.maxPossibleFloorNum" 
                [(ngModel)]="elevator.config.minFloorNum" 
                required >
         <span class="elevator-details__settings-text">Min floor</span>
@@ -65,8 +65,8 @@
                type="number" 
                name="max-floor" 
                id="max-floor" 
-               [min]="elevatorService.minFloorNum" 
-               [max]="elevatorService.maxFloorNum" 
+               [min]="defaultsConfig.minPossibleFloorNum" 
+               [max]="defaultsConfig.maxPossibleFloorNum" 
                [(ngModel)]="elevator.config.maxFloorNum" 
                required>
         <span class="elevator-details__settings-text">Max floor</span>
@@ -76,8 +76,8 @@
                type="number" 
                name="idle-floor" 
                id="idle-floor" 
-               [min]="elevatorService.minFloorNum" 
-               [max]="elevatorService.maxFloorNum" 
+               [min]="defaultsConfig.minPossibleFloorNum" 
+               [max]="defaultsConfig.maxPossibleFloorNum" 
                [(ngModel)]="elevator.config.idleFloorNum" 
                required>
         <span class="elevator-details__settings-text">Idle floor</span>
@@ -88,7 +88,7 @@
                name="max-load" 
                id="max-load" 
                min="1" 
-               [max]="elevatorService.maxPossibleLoad" 
+               [max]="defaultsConfig.maxPossibleLoad" 
                [(ngModel)]="elevator.config.maxLoad" 
                required>
         <span class="elevator-details__settings-text">Max load</span>
@@ -98,8 +98,8 @@
                type="number" 
                name="speed" 
                id="speed" 
-               [min]="elevatorService.minPossibleSpeed" 
-               [max]="elevatorService.maxPossibleSpeed" 
+               [min]="defaultsConfig.minPossibleSpeed" 
+               [max]="defaultsConfig.maxPossibleSpeed" 
                [(ngModel)]="elevator.config.speed" 
                step="0.05"
                required>
@@ -110,8 +110,8 @@
                type="number" 
                name="stop-duration" 
                id="stop-duration"
-               [min]="elevatorService.minPossibleStopDuration" 
-               [max]="elevatorService.maxPossibleStopDuration" 
+               [min]="defaultsConfig.minPossibleStopDuration" 
+               [max]="defaultsConfig.maxPossibleStopDuration" 
                [(ngModel)]="elevator.config.stopDuration"
                step="0.1"
                required>
@@ -122,8 +122,8 @@
                type="number" 
                name="door-duration" 
                id="door-duration"
-               [min]="elevatorService.minPossibleDoorToggleDuration" 
-               [max]="elevatorService.maxPossibleDoorToggleDuration" 
+               [min]="defaultsConfig.minPossibleDoorToggleDuration" 
+               [max]="defaultsConfig.maxPossibleDoorToggleDuration" 
                [(ngModel)]="elevator.config.toggleDoorDuration" 
                step="0.1"
                required>

@@ -6,5 +6,5 @@ import { ElevatorService } from 'src/app/services/elevator.service';
   templateUrl: './elevators-tab.component.html'
 })
 export class ElevatorsTabComponent {
-  constructor(public elevatorService: ElevatorService) { }
+  constructor(public elevatorService: ElevatorService) {}
 }

@@ -14,24 +14,26 @@ import { NextFloorData } from 'src/app/types/next-floor-data.type';
   templateUrl: './elevator.component.html'
 })
 export class ElevatorComponent implements OnInit, ISprite {
-  @Input() config!: ElevatorConfig;
+  @Input() idx!: number;
+
+  public id!: string;
+  private config!: ElevatorConfig;
+  public ElevatorState = ElevatorState;
   private configDiffer!: KeyValueDiffer<string, any>;
 
-  public ElevatorState = ElevatorState;
-  public readonly id: string;
-
-  private _state = ElevatorState.IDLE;  
+  private _state = ElevatorState.IDLE;
   private _nextFloors: NextFloorData[] = [{ floorNum: NaN }];
   private _currentFloorNum!: number;
-  public bottom: number = 0;
   private timeout!: any;
   private stoppedStartTime = 0;
+  public bottom: number = 0;
 
   constructor(public timeService: TimeService,
-              public elevatorService: ElevatorService,
-              public animationService: AnimationService,
-              private differs: KeyValueDiffers) {
-    this.id = this.elevatorService.registerElevator(this);
+    public elevatorService: ElevatorService,
+    public animationService: AnimationService,
+    private differs: KeyValueDiffers) {
+    // @ts-ignore
+    // this.elevatorService.registerElevatorComponent(this); // FIXME
   }
 
   get state(): ElevatorState {
@@ -82,14 +84,16 @@ export class ElevatorComponent implements OnInit, ISprite {
     return this.config.toggleDoorDuration;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.config = this.elevatorService.elevators[this.idx].config;
     this._currentFloorNum = this.config.idleFloorNum;
     this.bottom = this.calcDistanceFromBottom(this.currentFloorNum);
     this.animationService.register(this);
     this.configDiffer = this.differs.find(this.config).create();
+    console.log(this.config)
   }
 
-  ngDoCheck(): void {
+  ngDoCheck() {
     const changes = this.configDiffer.diff(this.config);
     if (changes) {
       changes.forEachChangedItem((r: KeyValueChangeRecord<string, number>) => {

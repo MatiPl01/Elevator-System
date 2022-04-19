@@ -1,7 +1,7 @@
 <article class="floor-details">
   <header class="floor-details__header">
     <article class="floor-details__number">
-      <h2>{{ floor.number }}</h2>
+      <h2>{{ floorNum }}</h2>
       <h5>Floor</h5>
     </article>
   </header>
@@ -11,9 +11,9 @@
            type="number" 
            name="height" 
            id="floor-height" 
-           [min]="elevatorService.minFloorHeight" 
-           [max]="elevatorService.maxFloorHeight" 
-           [(ngModel)]="floor.height" 
+           [min]="defaultsConfig.minPossibleFloorHeight" 
+           [max]="defaultsConfig.maxPossibleFloorHeight" 
+           [(ngModel)]="floorHeight" 
            step=".25"
            required
            (change)="updateHeight()">

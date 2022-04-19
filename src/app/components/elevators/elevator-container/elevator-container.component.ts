@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ElevatorService } from 'src/app/services/elevator.service';
-import { ElevatorConfig } from 'src/app/types/elevator-config.type';
-import { FloorConfig } from 'src/app/types/floor-config.type';
+import { FloorsConfig } from 'src/app/types/floors-config.type';
 
 
 type ElevatorContainerStyle = {
@@ -16,16 +15,14 @@ type ElevatorContainerStyle = {
   templateUrl: './elevator-container.component.html'
 })
 export class ElevatorContainerComponent implements OnInit, OnDestroy {
-  @Input('elevatorConfig') config!: ElevatorConfig;
+  @Input() idx!: number;
   public containerStyle!: ElevatorContainerStyle;
   private subscription: Subscription;
-  private floors!: FloorConfig[];
+  private floors!: FloorsConfig;
 
   constructor(private elevatorService: ElevatorService) {
     this.floors = this.elevatorService.floors;
-
-    this.subscription = this.elevatorService.floorsChange.subscribe((floors: FloorConfig[]) => {
-      this.floors = floors;
+    this.subscription = this.elevatorService.floorsChange.subscribe((floors: FloorsConfig) => {
       this.updateContainerStyle();
     })
   }
@@ -40,25 +37,29 @@ export class ElevatorContainerComponent implements OnInit, OnDestroy {
 
   private updateContainerStyle() {
     let marginBottom = 0, marginTop = 0, height = 0;
-    console.log(this.floors)
 
-    let i = 0;
-    for (; this.floors[i].number < this.config.minFloorNum; i++) {
-      marginBottom += this.floors[i].height;
+    const elevatorConfig = this.elevatorService.elevators[this.idx].config;
+
+    for (let i = 0; i < this.floors.minFloor - elevatorConfig.minFloorNum; i++) {
+      marginBottom += this.floors.heights[i];
     }
 
-    for (; this.floors[i] && this.floors[i].number <= this.config.maxFloorNum; i++) {
-      height += this.floors[i].height;
+    for (let i = this.floors.minFloor - elevatorConfig.minFloorNum; 
+             i < this.floors.maxFloor - elevatorConfig.minFloorNum; i++) {
+      height += this.floors.heights[i];
     }
 
-    for (; i < this.floors.length; i++) {
-      marginTop += this.floors[i].height;
+    for (let i = this.floors.maxFloor - elevatorConfig.minFloorNum + 1; 
+             i < elevatorConfig.maxFloorNum - elevatorConfig.minFloorNum; i++) {
+      marginTop += this.floors.heights[i];
     }
 
+    
     this.containerStyle = {
       height: `${height}em`,
       'margin-top': `${marginTop}em`,
       'margin-bottom': `${marginBottom}em`
     };
+    console.log('>>>', this.containerStyle)
   }
 }

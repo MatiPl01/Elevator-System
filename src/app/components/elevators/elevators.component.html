@@ -1,25 +1,25 @@
 <article class="elevator-box">
   <div class="elevator-box__wrapper">
     <ul class="elevator-box__elevators">
-      <ng-container *ngFor="let elevatorConfig of elevatorService.elevatorsConfig">
+      <ng-container *ngFor="let _ of elevatorService.elevators; let idx = index">
         <app-elevator-container 
-          [elevatorConfig]="elevatorConfig"
+          [idx]="idx"
         ></app-elevator-container>
       </ng-container>
     </ul>
 
     <ul class="elevator-box__floors">
-      <li *ngFor="let floor of elevatorService.floors" 
+      <li *ngFor="let floorHeight of elevatorService.floors.heights; let idx = index" 
           class="elevator-box__floor"
-         [ngStyle]="{ height: floor.height + 'em' }">
+         [ngStyle]="{ height: floorHeight + 'em' }">
         <article class="elevator-box__floor-number">
-          <h2>{{ floor.number }}</h2>
+          <h2>{{ elevatorService.floors.minFloor + idx }}</h2>
           <h5>floor</h5>
         </article>
         <ul class="elevator-box__panels">
-          <li *ngFor="let elevator of elevatorService.elevatorsConfig" class="elevator-box__panel">
-            <article *ngIf="elevator.minFloorNum <= floor.number && floor.number <= elevator.maxFloorNum"
-              [routerLink]="['panel', floor.number]" class="mini-panel">
+          <li *ngFor="let elevator of elevatorService.elevators" class="elevator-box__panel">
+            <article *ngIf="elevator.config.minFloorNum <= elevatorService.floors.minFloor + idx && elevatorService.floors.minFloor + idx <= elevator.config.maxFloorNum"
+              [routerLink]="['panel', elevatorService.floors.minFloor + idx]" class="mini-panel">
               <div class="mini-panel__inner">
                 <header class="mini-panel__header"></header>
                 <button class="mini-panel__button mini-panel__button--submit"></button>

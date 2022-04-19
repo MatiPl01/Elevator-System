@@ -1,7 +1,7 @@
 <article class="floors-tab">
   <ul class="floors-tab__floors-list">
-    <li *ngFor="let floor of elevatorService.floors" class="floors-tab__floors-item">
-      <app-floor-details [floor]="floor"></app-floor-details>
+    <li *ngFor="let _ of elevatorService.floors.heights; let idx = index" class="floors-tab__floors-item">
+      <app-floor-details [idx]="idx"></app-floor-details>
     </li>
   </ul>
 
@@ -14,8 +14,8 @@
                 type="number" 
                 name="min-floor" 
                 id="min-floor" 
-                [min]="elevatorService.minPossibleFloorNum" 
-                [max]="elevatorService.maxPossibleFloorNum"
+                [min]="defaultsConfig.minPossibleFloorNum" 
+                [max]="defaultsConfig.maxPossibleFloorNum"
                 [(ngModel)]="minFloorNum"
                 required>
           <span class="floors-tab__settings-text">Min floor</span>
@@ -26,11 +26,11 @@
                 type="number" 
                 name="max-floor" 
                 id="max-floor" 
-                [min]="elevatorService.minPossibleFloorNum" 
-                [max]="elevatorService.maxPossibleFloorNum" 
+                [min]="defaultsConfig.minPossibleFloorNum" 
+                [max]="defaultsConfig.maxPossibleFloorNum" 
                 [(ngModel)]="maxFloorNum"
                 required>
-          <span class="floors-tab__settings-text">Min floor</span>
+          <span class="floors-tab__settings-text">Max floor</span>
         </li>
       </ul>
 

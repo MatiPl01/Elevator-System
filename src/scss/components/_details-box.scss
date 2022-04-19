@@ -1,4 +1,5 @@
 @use '../utils/colors' as c;
+@use '../utils/gradients' as g;
 @use '../utils/shadows' as sh;
 @use '../utils/extends' as *;
 
@@ -17,16 +18,33 @@
   &__heading {
     color: c.$gray-light-1;
     text-shadow: sh.$black-strong-small;
+    line-height: 1;
   }
   
   &__tab-container {
     max-height: 50rem;
     overflow-y: auto;
   }
-  
-  &__elevators-heading {
-    color: c.$gray-light-2;
-    text-shadow: sh.$black-normal-small;
+
+  &__menu {
+    list-style: none;
+    display: flex;
     padding: 0 1.5rem;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  &__menu-item {
+    font-size: 2rem;
+    font-weight: 600;
+    color: c.$gray-light-1;
+    text-shadow: sh.$black-normal-small;
+    cursor: pointer;
+    
+    &.active {
+      background: g.$primary;
+      background-clip: text;
+      color: transparent;
+    }
   }
 }

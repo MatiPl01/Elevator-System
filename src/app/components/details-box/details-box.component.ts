@@ -7,7 +7,9 @@ import { DetailsTab } from 'src/app/enums/details-tab.enum';
 })
 export class DetailsBoxComponent {
   public DetailsTab = DetailsTab;
-  public activeTab: DetailsTab = DetailsTab.FLOORS;
+  public activeTab: DetailsTab = DetailsTab.ELEVATORS;
 
-  constructor() {}
+  switchTab(tab: DetailsTab) {
+    this.activeTab = tab;
+  }
 }
