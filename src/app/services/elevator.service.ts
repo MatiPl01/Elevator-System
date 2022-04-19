@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
-import { ElevatorComponent } from "../components/elevator/elevator.component";
+import { EventEmitter, Injectable } from "@angular/core";
+import { ElevatorComponent } from "../components/elevators/elevator/elevator.component";
 import { ElevatorConfig } from "../types/elevator-config.type";
+import { FloorConfig } from "../types/floor-config.type";
 import { RouteData } from "../types/route-data.type";
 
 
@@ -294,6 +295,10 @@ export class ElevatorService {
     // }
   ];
 
+  public floorsChange = new EventEmitter<FloorConfig[]>();
+
+  public floors = this.floorsConfig; // TODO - remove me
+
   private readonly _elevators: ElevatorComponent[] = [];
   public readonly floorHeights: number[] = [0];
   private readonly availableFloors: { min: number, max: number }[] = [];
@@ -320,11 +325,11 @@ export class ElevatorService {
   }
 
   get minFloorNum(): number {
-    return this.floorsConfig[0].number;
+    return this.floors[0].number;
   }
 
   get maxFloorNum(): number { // TODO - remove these getters below
-    return this.floorsConfig[this.floorsConfig.length - 1].number;
+    return this.floors[this.floors.length - 1].number;
   }
 
   get maxPossibleLoad(): number {
@@ -355,6 +360,22 @@ export class ElevatorService {
     return 5;
   }
 
+  get minFloorHeight(): number {
+    return 2.5;
+  }
+
+  get maxFloorHeight(): number { // TODO - remove these getters below
+    return 10;
+  }
+
+  get minPossibleFloorNum(): number {
+    return -10;
+  }
+
+  get maxPossibleFloorNum(): number { // TODO - remove these getters below
+    return 1000;
+  }
+
   get defaultElevatorConfig(): ElevatorConfig {
     return {
       minFloorNum: this.floorsConfig[0].number,
@@ -370,6 +391,38 @@ export class ElevatorService {
   registerElevator(elevator: ElevatorComponent): string {
     this.elevators.push(elevator);
     return ElevatorService.IDs[this.elevators.length - 1];
+  }
+
+  updateFloors(minFloorNum: number, maxFloorNum: number) {
+    const newFloors = [];
+    const prevMaxFloorNum = this.maxFloorNum;
+
+    // Add floors that are lower than the current minimum floor number
+    for (let floorNum = minFloorNum; floorNum < this.minFloorNum; floorNum++) {
+      newFloors.push({ number: floorNum, height: this.minFloorHeight });
+    }
+
+    // Add the current floors that are between the new minFloorNum and
+    // the new maxFloorNum
+    newFloors.push(...this.floors.filter((floor: FloorConfig) => {
+      return floor.number >= minFloorNum && floor.number <= maxFloorNum;
+    }))
+
+
+    console.log(maxFloorNum, prevMaxFloorNum)
+    // Add floors that are higher than the floor of the current maxFloorNum
+    for (let floorNum = prevMaxFloorNum + 1; floorNum <= maxFloorNum; floorNum++) {
+      newFloors.push({ number: floorNum, height: this.minFloorHeight });
+    }
+
+    this.floors = newFloors;
+    this.floorsChange.emit(newFloors);
+  }
+
+  notifyFloorChange() {
+    this.floorHeights.splice(1);
+    this.calcFloorHeightSums();
+    this.floorsChange.emit(this.floors);
   }
 
   getFloorHeight(floorNum: number): number {
@@ -411,7 +464,7 @@ export class ElevatorService {
 
     // Add a route to the elevator
     if (bestElevator) bestElevator.addRoute(bestRoute);
-    else alert("Could not find the best elevator");
+    // else alert("Could not find the best elevator");
   }
 
   private calcFloorHeightSums() {
@@ -426,7 +479,7 @@ export class ElevatorService {
     for (let i = this.minFloorNum; i < this.floorsConfig.length; i++) {
       this.availableFloors.push({ min: Infinity, max: -Infinity });
     }
-    
+
     for (const elevator of this.elevatorsConfig) {
       const minIdx = elevator.minFloorNum - this.minFloorNum;
       const maxIdx = elevator.maxFloorNum - this.minFloorNum;

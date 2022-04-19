@@ -7,6 +7,7 @@
   @extend %content-box;
   padding-right: 0;
   padding-left: 0;
+  width: 50rem;
 
   &__header {
     margin-bottom: 1rem;
@@ -18,7 +19,7 @@
     text-shadow: sh.$black-strong-small;
   }
   
-  &__elevators {
+  &__tab-container {
     max-height: 50rem;
     overflow-y: auto;
   }
@@ -27,17 +28,5 @@
     color: c.$gray-light-2;
     text-shadow: sh.$black-normal-small;
     padding: 0 1.5rem;
-  }
-
-  &__elevators-list {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem;
-  }
-
-  &__elevators-item {
-
   }
 }

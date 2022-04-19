@@ -13,7 +13,6 @@
 
   font-size: calc(var(--scale) * 4rem);
   margin: 5rem 0;
-  padding: 0 $box-padding-right 0 $box-padding-left;
   box-shadow: sh.$black-strong-medium;
   background-color: c.$elevator-box-wall;
   border-radius: 2rem;
@@ -24,23 +23,9 @@
     list-style: none;
   }
 
-  &__elevators {
-    display: flex;
-    gap: $elevator-gap;
-  }
-
-  &__elevator-container {
-    background-color: c.$elevator-container;
-    box-shadow: inset 0 0 .5em rgba(c.$black, .5);
-    border-radius: 1rem;
-    padding: .35rem;
-    width: $elevator-width;
-    position: relative;
-  }
-
   &__floors {
-    position: absolute;
-    inset: 0;
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   &__floor {
@@ -87,18 +72,14 @@
   }
 
   &__panels {
-    height: 100%;
-    width: 100%;
+    margin-left: $box-padding-left + $elevator-width;
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding-left: calc($elevator-width + $box-padding-left);
+    height: 100%;
     gap: $elevator-width;
   }
 
   &__panel {
-    width: 100%;
-    height: 100%;
+    width: $elevator-gap;
     position: relative;
 
     .mini-panel {
@@ -113,6 +94,7 @@
       box-shadow: sh.$black-normal-small;
       overflow: hidden;
       padding: .08em .06em;
+      z-index: 1;
       cursor: pointer;
 
       &__inner {
@@ -144,6 +126,23 @@
         bottom: 10%;
       }
     }
+  }
+
+  &__elevators {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: $elevator-gap;
+    padding-left: $box-padding-left;
+  }
+
+  &__elevator-container {
+    background-color: c.$elevator-container;
+    box-shadow: inset 0 0 .5em rgba(c.$black, .5);
+    border-radius: 1rem;
+    padding: .35rem;
+    width: $elevator-width;
+    position: relative;
   }
 }
 

@@ -5,15 +5,8 @@
     </h2>
   </header>
 
-  <section class="details-box__elevators">
-    <h3 class="details-box__elevators-heading">Elevator list</h3>
-    <ul class="details-box__elevators-list">
-      <li *ngFor="let elevator of elevatorService.elevators"
-          class="details-box__elevators-item">
-        <app-elevator-details 
-          [elevator]="elevator"
-        ></app-elevator-details>
-      </li>
-    </ul>
+  <section class="details-box__tab-container" [ngSwitch]="activeTab">
+    <app-elevators-tab *ngSwitchCase="DetailsTab.ELEVATORS"></app-elevators-tab>
+    <app-floors-tab *ngSwitchCase="DetailsTab.FLOORS"></app-floors-tab>
   </section>
 </article>

@@ -1,23 +1,24 @@
 <article class="elevator-box">
   <div class="elevator-box__wrapper">
     <ul class="elevator-box__elevators">
-      <li *ngFor="let elevator of elevatorService.elevatorsConfig; let i = index"
-        class="elevator-box__elevator-container" [ngStyle]="getElevatorContainerStyle(elevator.minFloorNum, elevator.maxFloorNum)">
-        <app-elevator [config]="elevator"></app-elevator>
-      </li>
+      <ng-container *ngFor="let elevatorConfig of elevatorService.elevatorsConfig">
+        <app-elevator-container 
+          [elevatorConfig]="elevatorConfig"
+        ></app-elevator-container>
+      </ng-container>
     </ul>
 
     <ul class="elevator-box__floors">
-      <li *ngFor="let floor of elevatorService.floorsConfig.slice().reverse(); let i = index" class="elevator-box__floor"
-        [ngStyle]="floorStyles[i]">
+      <li *ngFor="let floor of elevatorService.floors" 
+          class="elevator-box__floor"
+         [ngStyle]="{ height: floor.height + 'em' }">
         <article class="elevator-box__floor-number">
           <h2>{{ floor.number }}</h2>
           <h5>floor</h5>
         </article>
         <ul class="elevator-box__panels">
           <li *ngFor="let elevator of elevatorService.elevatorsConfig" class="elevator-box__panel">
-            <article
-              *ngIf="elevator.minFloorNum <= maxFloorNum - i && maxFloorNum - i <= elevator.maxFloorNum"
+            <article *ngIf="elevator.minFloorNum <= floor.number && floor.number <= elevator.maxFloorNum"
               [routerLink]="['panel', floor.number]" class="mini-panel">
               <div class="mini-panel__inner">
                 <header class="mini-panel__header"></header>

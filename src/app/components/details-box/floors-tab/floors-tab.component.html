@@ -1,0 +1,40 @@
+<article class="floors-tab">
+  <ul class="floors-tab__floors-list">
+    <li *ngFor="let floor of elevatorService.floors" class="floors-tab__floors-item">
+      <app-floor-details [floor]="floor"></app-floor-details>
+    </li>
+  </ul>
+
+  <section class="floors-tab__settings">
+    <h3 class="floors-tab__settings-heading">Settings</h3>
+    <form action="#" class="floors-tab__settings-form" (ngSubmit)="updateFloors(f)" #f="ngForm">
+      <ul class="floors-tab__settings-list">
+        <li class="floors-tab__settings-item">
+          <input class="floors-tab__settings-input" 
+                type="number" 
+                name="min-floor" 
+                id="min-floor" 
+                [min]="elevatorService.minPossibleFloorNum" 
+                [max]="elevatorService.maxPossibleFloorNum"
+                [(ngModel)]="minFloorNum"
+                required>
+          <span class="floors-tab__settings-text">Min floor</span>
+        </li>
+
+        <li class="floors-tab__settings-item">
+          <input class="floors-tab__settings-input" 
+                type="number" 
+                name="max-floor" 
+                id="max-floor" 
+                [min]="elevatorService.minPossibleFloorNum" 
+                [max]="elevatorService.maxPossibleFloorNum" 
+                [(ngModel)]="maxFloorNum"
+                required>
+          <span class="floors-tab__settings-text">Min floor</span>
+        </li>
+      </ul>
+
+      <input type="submit" value="Update" class="floors-tab__submit">
+    </form>
+  </section>
+</article>

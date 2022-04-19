@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { ElevatorService } from 'src/app/services/elevator.service';
+import { DetailsTab } from 'src/app/enums/details-tab.enum';
 
 @Component({
   selector: 'app-details-box',
   templateUrl: './details-box.component.html'
 })
 export class DetailsBoxComponent {
-  constructor(public elevatorService: ElevatorService) {}
+  public DetailsTab = DetailsTab;
+  public activeTab: DetailsTab = DetailsTab.FLOORS;
+
+  constructor() {}
 }

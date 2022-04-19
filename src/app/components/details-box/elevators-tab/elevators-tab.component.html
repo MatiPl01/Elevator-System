@@ -1,0 +1,7 @@
+<div class="elevators-tab">
+  <ul class="elevators-tab__elevators-list">
+    <li *ngFor="let elevator of elevatorService.elevators" class="elevators-tab__elevators-item">
+      <app-elevator-details [elevator]="elevator"></app-elevator-details>
+    </li>
+  </ul>
+</div>

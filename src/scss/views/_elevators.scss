@@ -50,6 +50,8 @@
   
   .settings,
   .details {
+    z-index: 5;
+
     &__checkbox {
       display: none;
     }
