@@ -2,129 +2,129 @@ export const sampleRoutes = [
   {
     from: 3,
     to: 17,
-    noPeople: 12
+    noPassengers: 12
   },
   {
     from: 9,
     to: 7,
-    noPeople: 12
+    noPassengers: 12
   },
   {
     from: 15,
     to: 5,
-    noPeople: 5
+    noPassengers: 5
   },
   {
     from: 18,
     to: 15,
-    noPeople: 9
+    noPassengers: 9
   },
   {
     from: 16,
     to: 3,
-    noPeople: 6
+    noPassengers: 6
   },
   {
     from: -1,
     to: 18,
-    noPeople: 8
+    noPassengers: 8
   },
   {
     from: 8,
     to: 14,
-    noPeople: 2
+    noPassengers: 2
   },
   {
     from: 17,
     to: 14,
-    noPeople: 5
+    noPassengers: 5
   },
   {
     from: 2,
     to: 14,
-    noPeople: 9
+    noPassengers: 9
   },
   {
     from: 6,
     to: 16,
-    noPeople: 15
+    noPassengers: 15
   },
   {
     from: 6,
-    to: 20,
-    noPeople: 8
+    to: 18,
+    noPassengers: 8
   },
   {
     from: 8,
-    to: 20,
-    noPeople: 12
+    to: 17,
+    noPassengers: 12
   },
   {
-    from: 19,
+    from: 15,
     to: -1,
-    noPeople: 2
+    noPassengers: 2
   },
   {
     from: 12,
     to: 6,
-    noPeople: 6
+    noPassengers: 6
   },
   {
     from: 6,
     to: 16,
-    noPeople: 10
+    noPassengers: 10
   },
   {
     from: 13,
     to: 4,
-    noPeople: 6
+    noPassengers: 6
   },
   {
-    from: 14,
-    to: 14,
-    noPeople: 4
+    from: 7,
+    to: 0,
+    noPassengers: 4
   },
   {
     from: 1,
-    to: 14,
-    noPeople: 6
+    to: 8,
+    noPassengers: 6
   },
   {
     from: 4,
     to: 13,
-    noPeople: 11
+    noPassengers: 11
   },
   {
-    from: -1,
-    to: 17,
-    noPeople: 4
+    from: 0,
+    to: 6,
+    noPassengers: 4
   },
   {
-    from: 4,
+    from: 10,
     to: 20,
-    noPeople: 9
+    noPassengers: 9
   },
   {
-    from: 4,
-    to: 2,
-    noPeople: 12
+    from: 18,
+    to: 11,
+    noPassengers: 12
   },
   {
-    from: -1,
-    to: 17,
-    noPeople: 15
+    from: 12,
+    to: 14,
+    noPassengers: 15
   },
   {
     from: 14,
     to: 20,
-    noPeople: 15
+    noPassengers: 15
   },
   {
     from: 7,
     to: 15,
-    noPeople: 11
+    noPassengers: 11
   }
-]
+];
 
 export const defaultsConfig = {
   maxPossibleLoad: 8,
@@ -144,33 +144,34 @@ export const floorsConfig = {
   minFloor: -1,
   maxFloor: 20,
   heights: [
+    3.2,
+    5.0,
+    4.75,
+    3.7,
     2.75,
-    3.3,
-    3.1,
-    4.6,
-    3.3,
-    2.4,
     4.45,
-    4.5,
-    2.95,
-    4.55,
-    3.1,
-    2.55,
+    3.8,
+    4.25,
     2.5,
+    4.9,
+    4.1,
+    3.6,
+    4.95,
     3.5,
-    2.75,
-    4.0,
-    2.15,
+    2.8,
+    4.1,
     4.35,
-    2.05,
-    4.3,
+    4.45,
+    3.35,
+    4.75,
+    2.6,
     4.25
   ]
 }
 
 export const defaultElevatorConfig = {
   minFloorNum: floorsConfig.minFloor,
-  maxFloorNum: floorsConfig.minFloor,
+  maxFloorNum: floorsConfig.maxFloor,
   idleFloorNum: floorsConfig.maxFloor,
   maxLoad: 6,
   speed: 2,
@@ -191,7 +192,7 @@ export const elevatorsConfig = [
   {
     minFloorNum: 10,
     maxFloorNum: 20,
-    maxLoad: 3,
+    maxLoad: 8,
     speed: 1.5,
     idleFloorNum: 10,
     stopDuration: 6,
@@ -200,7 +201,7 @@ export const elevatorsConfig = [
   {
     minFloorNum: -1,
     maxFloorNum: 18,
-    maxLoad: 3,
+    maxLoad: 6,
     speed: 1.5,
     idleFloorNum: 0,
     stopDuration: 6,

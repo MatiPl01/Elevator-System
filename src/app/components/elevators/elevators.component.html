@@ -9,7 +9,7 @@
     </ul>
 
     <ul class="elevator-box__floors">
-      <li *ngFor="let floorHeight of elevatorService.floors.heights; let idx = index" 
+      <li *ngFor="let floorHeight of elevatorService.floors.heights.slice(0, elevatorService.noFloors); let idx = index" 
           class="elevator-box__floor"
          [ngStyle]="{ height: floorHeight + 'em' }">
         <article class="elevator-box__floor-number">

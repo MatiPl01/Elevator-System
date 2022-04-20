@@ -13,6 +13,30 @@
     gap: 2rem;
     padding: 1.5rem;
   }
+
+  &__button {
+    background: g.$primary;
+    color: c.$gray-dark-1;
+    font-weight: bold;
+    padding: .75rem 1rem;
+    border-radius: 1rem;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    box-shadow: sh.$black-normal-small;
+    transition: transform .2s;
+
+    &:active {
+      box-shadow: sh.$black-strong-small;
+      transform: translateY(2px);
+    }
+
+    &.hidden {
+      display: none;
+    }
+  }
 }
 
 .elevator-details {

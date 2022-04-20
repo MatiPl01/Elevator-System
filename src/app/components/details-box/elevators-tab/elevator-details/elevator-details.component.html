@@ -47,7 +47,7 @@
     </ul>
   </section>
 
-  <form class="elevator-details__settings" (ngSubmit)="changeSettings(f)" #f="ngForm">
+  <form class="elevator-details__settings" #f="ngForm">
     <ul class="elevator-details__settings-list">
       <li class="elevator-details__settings-item">
         <input class="elevator-details__settings-input" 
@@ -57,7 +57,8 @@
                [min]="defaultsConfig.minPossibleFloorNum" 
                [max]="defaultsConfig.maxPossibleFloorNum" 
                [(ngModel)]="elevator.config.minFloorNum" 
-               required >
+               required
+               (change)="updateElevatorFloors()">
         <span class="elevator-details__settings-text">Min floor</span>
       </li>
       <li class="elevator-details__settings-item">
@@ -68,7 +69,8 @@
                [min]="defaultsConfig.minPossibleFloorNum" 
                [max]="defaultsConfig.maxPossibleFloorNum" 
                [(ngModel)]="elevator.config.maxFloorNum" 
-               required>
+               required
+               (change)="updateElevatorFloors()">
         <span class="elevator-details__settings-text">Max floor</span>
       </li>
       <li class="elevator-details__settings-item">
@@ -79,7 +81,8 @@
                [min]="defaultsConfig.minPossibleFloorNum" 
                [max]="defaultsConfig.maxPossibleFloorNum" 
                [(ngModel)]="elevator.config.idleFloorNum" 
-               required>
+               required
+               (change)="updateElevatorFloors()">
         <span class="elevator-details__settings-text">Idle floor</span>
       </li>
       <li class="elevator-details__settings-item">

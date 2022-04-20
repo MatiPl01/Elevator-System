@@ -17,6 +17,9 @@ export type ElevatorData = {
 export class ElevatorService {
   private static readonly IDs = 'ABCDEFGHIJKLMNOP'; // Max 16 elevators
   public floorsChange = new EventEmitter<FloorsConfig>();
+  public elevatorFloorsChange = new EventEmitter<number>();
+  public elevatorRegistered = new EventEmitter<{ idx: number, data: ElevatorData }>();
+  public elevatorRemoved = new EventEmitter<number>();
 
   private _floors: FloorsConfig = config.floorsConfig;
   private _elevators: ElevatorData[] = [];
@@ -26,8 +29,11 @@ export class ElevatorService {
 
   constructor() {
     this.calcFloorHeightSums();
+    this.loadElevatorsConfig();
     this.updateAvailableFloors();
-    this.loadSampleData();
+    
+    // Load the routes asynchronously (to ensure that elevator components were created)
+    setTimeout(this.loadSampleRoutes.bind(this), 0);
   }
 
   get floors(): FloorsConfig {
@@ -38,11 +44,24 @@ export class ElevatorService {
     return this._elevators;
   }
 
-  registerElevatorComponent(component: ElevatorComponent) {
-    this.elevators.push({
-      config: config.defaultElevatorConfig,
-      component: component
-    });
+  get noFloors(): number {
+    return this.floors.maxFloor - this.floors.minFloor + 1;
+  }
+
+  registerElevatorComponent(idx: number, component: ElevatorComponent) {
+    if (idx < this._elevators.length) {
+      this._elevators[idx].component = component;
+    } else {
+      this._elevators.push({
+        config: config.defaultElevatorConfig,
+        component: component
+      });
+    }
+
+    this.elevatorRegistered.emit({
+      idx,
+      data: this._elevators[idx]
+    })
   }
 
   getElevatorId(idx: number): string {
@@ -52,15 +71,22 @@ export class ElevatorService {
     return ElevatorService.IDs[idx];
   }
 
-  addElevator() {
-    this._elevators.push({
-      config: config.defaultElevatorConfig,
-      component: null
-    });
+  canCreateElevator() {
+    return this._elevators.length < ElevatorService.IDs.length;
+  }
+
+  createElevator() {
+    if (this.canCreateElevator()) {
+      this._elevators.push({
+        config: config.defaultElevatorConfig,
+        component: null
+      });
+    }
   }
 
   removeElevator(idx: number) {
     this._elevators.splice(idx, 1);
+    this.elevatorRemoved.emit(idx);
   }
 
   updateFloors(minFloorNum: number, maxFloorNum: number) {
@@ -94,6 +120,10 @@ export class ElevatorService {
     this.floorHeights.clear();
     this.calcFloorHeightSums();
     this.floorsChange.emit(this._floors);
+  }
+
+  notifyElevatorFloorsChange(idx: number) {
+    this.elevatorFloorsChange.emit(idx);
   }
 
   getFloorHeight(floorNum: number): number {
@@ -142,22 +172,23 @@ export class ElevatorService {
 
     // Add a route to the elevator
     if (bestElevator) bestElevator.addRoute(bestRoute);
-    else alert("Could not find the best elevator");
+    else console.error("Could not find the best elevator. Check if your config is correct");
   }
 
   private calcFloorHeightSums() {
-    for (let i = 0; i <= this.floors.heights.length; i++) {
+    this.floorHeights.set(this.floors.minFloor, 0);
+    for (let i = 1; i < this.floors.heights.length; i++) {
       const prevHeight = this.floorHeights.get(this.floors.minFloor + i - 1) || 0;
-      const currHeight = this.floors.heights[this.floors.minFloor + i];
+      const currHeight = this.floors.heights[i - 1];
       this.floorHeights.set(this.floors.minFloor + i, prevHeight + currHeight);
     }
   }
 
   private updateAvailableFloors() {
-    for (let i = this.floors.minFloor; i < this.floors.maxFloor; i++) {
+    for (let i = this.floors.minFloor; i <= this.floors.maxFloor; i++) {
       this.availableFloors.set(i, { min: Infinity, max: -Infinity });
     }
-
+    
     for (const { config: elevatorConfig } of this.elevators) {
       for (let i = elevatorConfig.minFloorNum; i <= elevatorConfig.maxFloorNum; i++) {
         // Update the minimum and maximum floor reachable from the ith floor
@@ -173,9 +204,17 @@ export class ElevatorService {
     }
   }
 
-  private loadSampleData() {
+  private loadElevatorsConfig() {
     this._elevators = config.elevatorsConfig.map((elevatorConfig: ElevatorConfig) => {
       return { config: elevatorConfig, component: null };
     });
+  }
+
+  private loadSampleRoutes() {
+    for (const route of config.sampleRoutes) {
+      for (let i = 0; i < route.noPassengers; i++) {
+        this.addRoute(route.from, route.to);
+      }
+    }
   }
 }

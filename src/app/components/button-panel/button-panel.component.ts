@@ -24,6 +24,8 @@ export class ButtonPanelComponent implements OnInit {
     const { min, max } = this.elevatorService.getAvailableFloorsFrom(this.startFloorNum);
     this.minFloorNum = min;
     this.maxFloorNum = max;
+
+    console.log(min, max, this.startFloorNum)
   }
 
   ngOnInit() {

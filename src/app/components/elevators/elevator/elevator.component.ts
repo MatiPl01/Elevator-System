@@ -1,4 +1,4 @@
-import { Component, Input, KeyValueChangeRecord, KeyValueDiffer, KeyValueDiffers, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ElevatorState } from 'src/app/enums/elevator-state.enum';
 import { ISprite } from 'src/app/interfaces/sprite.interface';
 import { AnimationService } from 'src/app/services/animation.service';
@@ -7,19 +7,19 @@ import { TimeService } from 'src/app/services/time.service';
 import { ElevatorConfig } from 'src/app/types/elevator-config.type';
 import { RouteData } from 'src/app/types/route-data.type';
 import { NextFloorData } from 'src/app/types/next-floor-data.type';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-elevator',
   templateUrl: './elevator.component.html'
 })
-export class ElevatorComponent implements OnInit, ISprite {
+export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
   @Input() idx!: number;
 
+  public ElevatorState = ElevatorState;
   public id!: string;
   private config!: ElevatorConfig;
-  public ElevatorState = ElevatorState;
-  private configDiffer!: KeyValueDiffer<string, any>;
 
   private _state = ElevatorState.IDLE;
   private _nextFloors: NextFloorData[] = [{ floorNum: NaN }];
@@ -28,13 +28,18 @@ export class ElevatorComponent implements OnInit, ISprite {
   private stoppedStartTime = 0;
   public bottom: number = 0;
 
+  private subscription: Subscription;
+
   constructor(public timeService: TimeService,
     public elevatorService: ElevatorService,
-    public animationService: AnimationService,
-    private differs: KeyValueDiffers) {
-    // @ts-ignore
-    // this.elevatorService.registerElevatorComponent(this); // FIXME
-  }
+    public animationService: AnimationService) {
+      this.subscription = this.elevatorService.elevatorRemoved.subscribe((idx: number) => {
+        if (this.idx > idx) {
+          this.idx--;
+          this.id = this.elevatorService.getElevatorId(this.idx);
+        }
+      })
+  } 
 
   get state(): ElevatorState {
     return this._state;
@@ -85,45 +90,20 @@ export class ElevatorComponent implements OnInit, ISprite {
   }
 
   ngOnInit() {
-    this.config = this.elevatorService.elevators[this.idx].config;
+    const elevatorData = this.elevatorService.elevators[this.idx];
+    this.id = this.elevatorService.getElevatorId(this.idx);
+    this.config = elevatorData.config;
     this._currentFloorNum = this.config.idleFloorNum;
-    this.bottom = this.calcDistanceFromBottom(this.currentFloorNum);
+    this.bottom = this.calcDistanceFromBottom(this._currentFloorNum);
     this.animationService.register(this);
-    this.configDiffer = this.differs.find(this.config).create();
-    console.log(this.config)
+
+    if (!elevatorData.component) {
+      this.elevatorService.registerElevatorComponent(this.idx, this);
+    }
   }
 
-  ngDoCheck() {
-    const changes = this.configDiffer.diff(this.config);
-    if (changes) {
-      changes.forEachChangedItem((r: KeyValueChangeRecord<string, number>) => {
-        switch (r.key) {
-          // Check if all stops floor numbers are still accessible
-          // after the maxFloorNum was changed
-          case 'maxFloorNum':
-            for (let nextFloor of this.nextFloors) {
-              if (nextFloor.floorNum > this.maxFloorNum) {
-                this._nextFloors.splice(1);
-                break;
-              }
-            }
-            break;
-          // Check if all stops floor numbers are still accessible
-          // after the minFloorNum was changed
-          case 'minFloorNum':
-            for (let nextFloor of this.nextFloors) {
-              if (nextFloor.floorNum < this.minFloorNum) {
-                this._nextFloors.splice(1);
-                break;
-              }
-            }
-            break;
-          // Update the idleFloorNum if its value is not correct
-          case 'idleFloorNum':
-            this.config.idleFloorNum = Math.min(Math.max(this.minFloorNum, this.idleFloorNum), this.maxFloorNum);
-        }
-      });
-    }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   update(deltaTime: number) {
@@ -157,6 +137,14 @@ export class ElevatorComponent implements OnInit, ISprite {
         }
         break;
     }
+  }
+
+  reset() {
+    this._currentFloorNum = this.idleFloorNum;
+    this._state = ElevatorState.IDLE;
+    this._currentFloorNum = this.config.idleFloorNum;
+    this._nextFloors.splice(1);
+    this.bottom = this.calcDistanceFromBottom(this._currentFloorNum);
   }
 
   addRoute(route: RouteData) {

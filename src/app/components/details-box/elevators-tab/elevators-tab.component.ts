@@ -7,4 +7,8 @@ import { ElevatorService } from 'src/app/services/elevator.service';
 })
 export class ElevatorsTabComponent {
   constructor(public elevatorService: ElevatorService) {}
+
+  createNewElevator() {
+    this.elevatorService.createElevator();
+  }
 }
