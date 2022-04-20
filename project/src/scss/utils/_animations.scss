@@ -1,0 +1,10 @@
+@use '../utils/colors' as c;
+
+
+@keyframes animate-elevator-lamp {
+  to {
+    width: 160%;
+    height: 160%;
+    opacity: .5;
+  }
+}

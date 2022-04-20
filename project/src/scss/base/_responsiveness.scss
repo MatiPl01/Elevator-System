@@ -1,0 +1,19 @@
+@use "../utils/mixins" as *;
+
+$scale: 1;
+
+html {
+  font-size: $scale * 62.5%;
+
+  @include respond(tab-land) {
+    font-size: $scale * 56.25%;
+  }
+
+  @include respond(tab-port) {
+    font-size: $scale * 50%;
+  }
+
+  @include respond(big-desktop) {
+    font-size: $scale * 75%;
+  }
+}

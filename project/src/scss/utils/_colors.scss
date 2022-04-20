@@ -1,0 +1,20 @@
+$black: #000;
+$white: #fff;
+
+$gray-light-1: #fafafa;
+$gray-light-2: #dfdfdf;
+$gray-light-3: #ccc;
+$gray-light-4: #a3a3a3;
+
+$gray-dark-1: #111;
+$gray-dark-2: #222;
+$gray-dark-3: #333;
+$gray-dark-4: #575757;
+
+$primary-light: #a6cf6a;
+$primary-dark: #86c38d;
+$primary: mix($primary-light, $primary-dark);
+
+$elevator-lamp: #FFEC91;
+$elevator-box-wall: palegoldenrod;
+$elevator-container: darken(palegoldenrod, 50%);

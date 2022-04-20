@@ -1,0 +1,53 @@
+@use './mixins' as *;
+@use './colors' as c;
+@use './shadows' as sh;
+@use './gradients' as g;
+
+
+%content-box {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: sh.$black-normal-large;
+  background-color: rgba(c.$gray-dark-4, .9);
+  padding: 1.25rem 1.5rem;
+}
+
+%small-button {
+  background: g.$primary;
+  margin-left: .75rem;
+  border-radius: 1rem;
+  width: 3rem;
+  height: 3rem;
+  @include flex-center;
+
+  svg {
+    font-size: 1.4rem;
+    fill: c.$gray-dark-1;
+    filter: drop-shadow(sh.$black-strong-small);
+  }
+}
+
+%normal-button {
+  background: g.$primary;
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  color: c.$gray-dark-1;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: sh.$black-normal-medium;
+  cursor: pointer;
+
+  &:active {
+    transform: translateY(2px) scale(.99);
+    box-shadow: sh.$black-strong-medium;
+  }
+}
+
+%input-box {
+  width: 6.5rem;
+  border-radius: .5rem;
+  background-color: c.$gray-dark-3;
+  padding: .5rem;
+  color: c.$gray-light-1;
+  font-weight: bold;
+}

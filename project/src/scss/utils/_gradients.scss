@@ -1,0 +1,8 @@
+@use 'colors' as c;
+
+
+$primary: linear-gradient(to right, c.$primary-light, c.$primary-dark) mix(c.$primary-light, c.$primary-dark);
+
+$gray-light: linear-gradient(to right, c.$gray-light-3, c.$gray-light-4) mix(c.$gray-light-3, c.$gray-light-4);
+
+$gray-medium: linear-gradient(60deg, c.$gray-dark-4, c.$gray-light-4) mix(c.$gray-dark-4, c.$gray-light-4);

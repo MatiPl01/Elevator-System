@@ -1,0 +1,137 @@
+@use '../utils/mixins' as *;
+@use '../utils/animations' as *;
+@use '../utils/colors' as c;
+@use '../utils/shadows' as sh;
+@use '../utils/gradients' as g;
+
+
+.elevator {
+  background-color: c.$gray-dark-3;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    padding-bottom: 125%;
+    display: block;
+  }
+
+  &__doors {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+  }
+
+  &__door {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: g.$gray-medium;
+    transition: all .75s ease-out;
+
+    &--left { left: 0; }
+    &--right { right: 0; }
+  }
+
+  &__doors.open &__door {
+    &--left { left: -50%; }
+    &--right { right: -50%; }
+  }
+
+  &__id {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &-code {
+      color: c.$gray-light-2;
+      font-size: .8em;
+      text-shadow: sh.$black-strong-medium;
+    }
+  }
+
+  &__inside {
+    position: absolute;
+    perspective: 5em;
+    inset: 0;
+  }
+  
+  &__wall,
+  &__floor,
+  &__roof {
+    background-image: radial-gradient(c.$gray-dark-4, c.$gray-dark-3);
+    box-shadow: inset sh.$black-normal-medium;
+  }
+
+  &__wall {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    &--left {
+      transform-origin: left;
+      transform: rotateY(85deg);
+    }
+
+    &--right {
+      transform-origin: right;
+      transform: rotateY(-85deg);
+    }
+
+    &--back {
+      width: 85%;
+      left: 50%;
+      transform: translate3d(-50%, 0, -2em);
+    }
+  }
+
+  &__roof,
+  &__floor {
+    position: absolute;
+    width: 100%;
+
+    &::after {
+      content: '';
+      padding-bottom: 170%;
+      display: block;
+    }
+  }
+
+  &__floor {
+    bottom: 0;
+    transform-origin: bottom;
+    transform: rotateX(94deg);
+  }
+
+  &__roof {
+    top: 0;
+    transform-origin: top;
+    transform: rotateX(-94deg);
+
+    &-lamp {
+      @include abs-center;
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      background-color: c.$elevator-lamp;
+      box-shadow: sh.$black-strong-small,
+                  inset sh.$black-strong-small;
+      filter: blur(1px);
+
+      &::before {
+        content: '';
+        @include abs-center;
+        background: radial-gradient(rgba(c.$elevator-lamp, .75), transparent 75%);
+        opacity: 1;
+        width: 125%;
+        height: 125%;
+        border-radius: 50%;
+        animation: animate-elevator-lamp .75s linear infinite alternate;
+      }
+    }
+  }
+}

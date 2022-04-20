@@ -1,27 +1,44 @@
-# ElevatorSystem
+# Elevator System
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.1.
+## Description
+The purpose of this application is to simulate the functioning of the elevator system. To optimize the method of accepting requests to the elevator and assigning requests to elevators, the algorithm calculates the ETD (Estimated Time to Destination) after each request and finds the elevator which seems to handle the call in the shortest time. Consequently, there is a possibility that the algorithm will insert the new stop between stops that were scheduled before. That is another thing which must be taken into account while calculating the total time increase caused by the new passenger.
 
-## Development server
+The total time is the sum of:
+- time which the new passenger is supposed for the elevator to come,
+- time of the elevator stop (opening the door, passenger entering the elevator, closing the door),
+- time required to reach the new passenger's destination,
+- time of each stop added to the elevator's route multiplied by the number of passengers traveling inside the elevator or entering the elevator after that stop (in other words, the algorithm calculates the sum of delays caused by the new passenger for all passengers that called the elevator before the new request)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Preview
+### Overview
+![Overview](/docs/overview.gif)
 
-## Code scaffolding
+## General Settings
+- pause / resume simulation,
+- change time ratio (speed of animations),
+- adjust scale of the elevators container,
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![General Settings](/docs/settings.gif)
 
-## Build
+## Elevator Settings
+You can modify elevator's parameters that are listed below:
+- Min floor - the number of the lowest floor reached by the elevator,
+- Max floor - the number of the highest floor reached by the elevator,
+- Idle floor - the number of floor at which the elevator waits in the idle mode,
+- Speed - the velocity of the elevator [m/s],
+- Stop duration - time the elevator waits for passengers to enter,
+- Toggle door duration - time required to open/close the elevator door
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+![Elevator Settings](/docs/elevator-settings.gif)
 
-## Running unit tests
+## Floors Settings
+- Min floor - the number of the lowest floor in the building,
+- Max floor - the number of the highest floor in the building
+- Height (adjusted for each floor separately) - the height of the floor,
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+![Floors Settings](/docs/floors-settings.gif)
 
-## Running end-to-end tests
+## Configuration
+Example usage of the application displaying how to add/remove elevators, add/remove floors and adjust their properties.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![Configuration](/docs/configuration.gif)

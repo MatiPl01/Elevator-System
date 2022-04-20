@@ -1,0 +1,50 @@
+@use '../utils/colors' as c;
+@use '../utils/gradients' as g;
+@use '../utils/shadows' as sh;
+@use '../utils/extends' as *;
+
+
+.details-box {
+  @extend %content-box;
+  padding-right: 0;
+  padding-left: 0;
+  width: 50rem;
+
+  &__header {
+    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+  }
+  
+  &__heading {
+    color: c.$gray-light-1;
+    text-shadow: sh.$black-strong-small;
+    line-height: 1;
+  }
+  
+  &__tab-container {
+    max-height: 50rem;
+    overflow-y: auto;
+  }
+
+  &__menu {
+    list-style: none;
+    display: flex;
+    padding: 0 1.5rem;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  &__menu-item {
+    font-size: 2rem;
+    font-weight: 600;
+    color: c.$gray-light-1;
+    text-shadow: sh.$black-normal-small;
+    cursor: pointer;
+    
+    &.active {
+      background: g.$primary;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+}

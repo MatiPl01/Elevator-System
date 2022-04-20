@@ -1,0 +1,33 @@
+<article class="elevator-box">
+  <div class="elevator-box__wrapper">
+    <ul class="elevator-box__elevators">
+      <ng-container *ngFor="let _ of elevatorService.elevators; let idx = index">
+        <app-elevator-container 
+          [idx]="idx"
+        ></app-elevator-container>
+      </ng-container>
+    </ul>
+
+    <ul class="elevator-box__floors">
+      <li *ngFor="let heightObj of heights; let idx = index" 
+          class="elevator-box__floor"
+         [ngStyle]="{ height: heightObj.height + 'em' }">
+        <article class="elevator-box__floor-number">
+          <h2>{{ elevatorService.floors.minFloor + idx }}</h2>
+          <h5>floor</h5>
+        </article>
+        <ul class="elevator-box__panels">
+          <li *ngFor="let elevator of elevatorService.elevators" class="elevator-box__panel">
+            <article *ngIf="elevator.config.minFloorNum <= elevatorService.floors.minFloor + idx && elevatorService.floors.minFloor + idx <= elevator.config.maxFloorNum"
+              [routerLink]="['panel', elevatorService.floors.minFloor + idx]" class="mini-panel">
+              <div class="mini-panel__inner">
+                <header class="mini-panel__header"></header>
+                <button class="mini-panel__button mini-panel__button--submit"></button>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</article>

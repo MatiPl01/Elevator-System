@@ -1,0 +1,46 @@
+@use '../utils/colors' as c;
+@use '../utils/gradients' as g;
+
+
+::-webkit-scrollbar {
+	width: 1.5rem;
+  height: 1.5rem;
+
+  &-thumb {
+    background: g.$primary;
+    border-radius: .5rem;
+  }
+
+  &-track {
+    background-color: c.$gray-dark-1;
+
+    &:hover {
+      background-color: c.$gray-dark-3;
+    }
+  }
+
+  &-corner {
+    background-color: c.$gray-dark-1;
+  }
+}
+
+
+body {
+  ::-webkit-scrollbar {
+    width: 1rem;
+
+    &-thumb {
+      background: c.$gray-light-4;
+      border-radius: 1rem;
+    }
+
+    &-track {
+      background-color: transparent;
+      border-radius: 1rem;
+
+      &:hover {
+        background-color: c.$gray-dark-3;
+      }
+    }
+  }
+}

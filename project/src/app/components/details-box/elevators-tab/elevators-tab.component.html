@@ -1,0 +1,19 @@
+<div class="elevators-tab">
+  <ul class="elevators-tab__elevators-list">
+    <li *ngFor="let elevator of elevatorService.elevators; let idx = index" 
+         class="elevators-tab__elevators-item">
+      <app-elevator-details 
+        [idx]="idx"
+      ></app-elevator-details>
+    </li>
+  </ul>
+
+  <button class="elevators-tab__button elevators-tab__button--add" 
+         [ngClass]="{ hidden: !elevatorService.canCreateElevator() }"
+         (click)="createNewElevator()">
+    <svg class="elevators-tab__icon">
+      <use href="/assets/icons/icons.svg#plus"></use>
+    </svg>
+    <span>New elevator</span>
+  </button>
+</div>

@@ -1,0 +1,16 @@
+@use '../utils/colors' as c;
+
+$black-light-large: 0 0 3rem rgba(c.$black, .15);
+$black-light-medium: 0 0 1.5rem rgba(c.$black, .15);
+$black-light-small: 0 0 .5rem rgba(c.$black, .15);
+$black-light-smallest: 0 0 .15rem rgba(c.$black, .15);
+
+$black-normal-large: 0 0 3rem rgba(c.$black, .25);
+$black-normal-medium: 0 0 1.5rem rgba(c.$black, .25);
+$black-normal-small: 0 0 .5rem rgba(c.$black, .25);
+$black-normal-smallest: 0 0 .15rem rgba(c.$black, .25);
+
+$black-strong-large: 0 0 3rem rgba(c.$black, .5);
+$black-strong-medium: 0 0 1.5rem rgba(c.$black, .5);
+$black-strong-small: 0 0 .5rem rgba(c.$black, .5);
+$black-strong-smallest: 0 0 .15rem rgba(c.$black, .5);

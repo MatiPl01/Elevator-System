@@ -1,0 +1,162 @@
+@use 'sass:math';
+@use '../utils/colors' as c;
+@use '../utils/shadows' as sh;
+@use '../utils/gradients' as g;
+@use '../utils/mixins' as *;
+
+
+.elevator-box {
+  $box-padding-right: 1.5em;
+  $box-padding-left: 3em;
+  $elevator-gap: 2em;
+  $elevator-width: 2em;
+
+  font-size: calc(var(--scale) * 4rem);
+  margin: 5rem 0;
+  box-shadow: sh.$black-strong-medium;
+  background-color: c.$elevator-box-wall;
+  border-radius: 2rem;
+  position: relative;
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+  }
+
+  &__floors {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  &__floor {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.1em;
+      background: linear-gradient(to top, c.$gray-dark-1 75%, transparent);
+      height: .2em;
+    }
+  }
+
+  &__floor-number {
+    $number-scale: .4;
+    position: absolute;
+    font-size: $number-scale * 1em;
+    bottom: 2.5em;
+    left: .3 * math.div($box-padding-left, $number-scale);
+    transform: translateX(-50%);
+    background: g.$gray-light;
+    padding: .2em;
+    border-radius: .2em;
+    text-align: center;
+    box-shadow: sh.$black-light-small;
+    color: c.$gray-dark-2;
+
+    & > * {
+      text-shadow: sh.$black-normal-small;
+    }
+
+    h2 {
+      line-height: .8;
+      font-size: 1.8em;
+    }
+
+    h5 {
+      text-transform: uppercase;
+      font-size: .6em;
+    }
+  }
+
+  &__panels {
+    margin-left: $box-padding-left + $elevator-width;
+    display: flex;
+    height: 100%;
+    gap: $elevator-width;
+  }
+
+  &__panel {
+    width: $elevator-gap;
+    position: relative;
+
+    .mini-panel {
+      position: absolute;
+      left: 50%;
+      bottom: .5em;
+      transform: translate(-50%, -50%);
+      height: 1em;
+      width: .7em;
+      border-radius: .1em;
+      background-color: c.$gray-light-1;
+      box-shadow: sh.$black-normal-small;
+      overflow: hidden;
+      padding: .08em .06em;
+      z-index: 1;
+      cursor: pointer;
+
+      &__inner {
+        border-radius: .05em;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        background-color: c.$gray-dark-2;
+      }
+
+      &__header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 15%;
+        background-color: c.$gray-dark-4;
+      }
+
+      &__button--submit {
+        background: g.$primary;
+        width: 50%;
+        height: .15em;
+        border-radius: .1em;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 10%;
+      }
+    }
+  }
+
+  &__elevators {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: $elevator-gap;
+    padding-left: $box-padding-left;
+  }
+
+  &__elevator-container {
+    background-color: c.$elevator-container;
+    box-shadow: inset 0 0 .5em rgba(c.$black, .5);
+    border-radius: 1rem;
+    padding: .35rem;
+    width: $elevator-width;
+    position: relative;
+  }
+}
+
+.panel-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  @include flex-center;
+
+  &::after {
+    content: '';
+    inset: 0;
+    position: absolute;
+    background-color: rgba(c.$black, .75);
+    z-index: -1;
+  }
+}
