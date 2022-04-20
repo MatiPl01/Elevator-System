@@ -1,5 +1,9 @@
 # Elevator System
 
+## How to start the app?
+See the steps you need to follow to run the application:
+[How to run the app](/project)
+
 ## Description
 The purpose of this application is to simulate the functioning of the elevator system. To optimize the method of accepting requests to the elevator and assigning requests to elevators, the algorithm calculates the ETD (Estimated Time to Destination) after each request and finds the elevator which seems to handle the call in the shortest time. Consequently, there is a possibility that the algorithm will insert the new stop between stops that were scheduled before. That is another thing which must be taken into account while calculating the total time increase caused by the new passenger.
 
