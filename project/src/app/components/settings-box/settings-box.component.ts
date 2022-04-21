@@ -9,8 +9,8 @@ import { TimeService } from 'src/app/services/time.service';
   templateUrl: './settings-box.component.html'
 })
 export class SettingsBoxComponent {
-  public readonly MIN_SCALE = .25;
-  public readonly MAX_SCALE = 4;
+  public readonly MIN_SCALE = .1;
+  public readonly MAX_SCALE = 2;
   public readonly SCALE_STEP = .05;
   public TimeService = TimeService;
 
