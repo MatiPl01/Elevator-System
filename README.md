@@ -5,13 +5,18 @@ See the steps you need to follow to run the application:
 [How to run the app](/project)
 
 ## Description
-The purpose of this application is to simulate the functioning of the elevator system. To optimize the method of accepting requests to the elevator and assigning requests to elevators, the algorithm calculates the ETD (Estimated Time to Destination) after each request and finds the elevator which seems to handle the call in the shortest time. Consequently, there is a possibility that the algorithm will insert the new stop between stops that were scheduled before. That is another thing which must be taken into account while calculating the total time increase caused by the new passenger.
+### Introduction
+The purpose of this application is to simulate the functioning of the elevator system. To optimize the method of accepting requests to the elevator and assigning requests to elevators, the algorithm calculates the ETD (Estimated Time to Destination) after each request and finds the elevator which seems to handle the call in the shortest time. As a consequence, there is a possibility that the algorithm will insert the new stop between stops that were scheduled before, which will result in a longer waiting time for other passengers (the algorithm will minimize this time). 
 
-The total time is the sum of:
-- time which the new passenger is supposed for the elevator to come,
-- time of the elevator stop (opening the door, passenger entering the elevator, closing the door),
+### How is total time calculated?
+The total time increased by adding the new route to the elevator routes is the sum of:
+- time which the new passenger is supposed to wait for the elevator to come,
+- elevator stop duration (opening the door, passenger entering the elevator, closing the door),
 - time required to reach the new passenger's destination,
 - time of each stop added to the elevator's route multiplied by the number of passengers traveling inside the elevator or entering the elevator after that stop (in other words, the algorithm calculates the sum of delays caused by the new passenger for all passengers that called the elevator before the new request)
+
+### How passengers call the elevator?
+To call the elevator, the passenger must enter the target floor using one of the button panels located on each floor. Button panels are not assigned to a specific elevator.  Instead, the elevator is selected based on the lowest ETD increase of all passengers. After the elevator call, passengers will be notified to which elevator they have been assigned (this functionality is not implemented - the new route will only appear in the details panel).
 
 ## Preview
 ### Overview
