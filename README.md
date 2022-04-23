@@ -22,14 +22,14 @@ To call the elevator, the passenger must enter the target floor using one of the
 ### Overview
 ![Overview](/docs/overview.gif)
 
-## General Settings
+### General Settings
 - pause / resume simulation,
 - change time ratio (speed of animations),
 - adjust scale of the elevators container,
 
 ![General Settings](/docs/settings.gif)
 
-## Elevator Settings
+### Elevator Settings
 You can modify elevator's parameters that are listed below:
 - Min floor - the number of the lowest floor reached by the elevator,
 - Max floor - the number of the highest floor reached by the elevator,
@@ -40,14 +40,14 @@ You can modify elevator's parameters that are listed below:
 
 ![Elevator Settings](/docs/elevator-settings.gif)
 
-## Floors Settings
+### Floors Settings
 - Min floor - the number of the lowest floor in the building,
 - Max floor - the number of the highest floor in the building
 - Height (adjusted for each floor separately) - the height of the floor,
 
 ![Floors Settings](/docs/floors-settings.gif)
 
-## Configuration
+### Configuration
 Example usage of the application displaying how to add/remove elevators, add/remove floors and adjust their properties.
 
 ![Configuration](/docs/configuration.gif)
