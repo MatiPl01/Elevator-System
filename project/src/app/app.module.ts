@@ -8,14 +8,14 @@ import { ButtonPanelComponent } from './components/button-panel/button-panel.com
 import { ElevatorsComponent } from './components/elevators/elevators.component';
 import { ElevatorComponent } from './components/elevators/elevator/elevator.component';
 import { ElevatorsViewComponent } from './views/elevators/elevators-view.component';
-import { SettingsBoxComponent } from './components/options/options.component';
+import { SettingsBoxComponent } from './components/settings/options/options.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { RangeSliderComponent } from './components/range-slider/range-slider.component';
-import { DetailsPanelComponent } from './components/details-panel/details-panel.component';
-import { ElevatorDetailsComponent } from './components/details-panel/elevators-tab/elevator-details/elevator-details.component';
-import { FloorDetailsComponent } from './components/details-panel/floors-tab/floor-details/floor-details.component';
-import { ElevatorsTabComponent } from './components/details-panel/elevators-tab/elevators-tab.component';
-import { FloorsTabComponent } from './components/details-panel/floors-tab/floors-tab.component';
+import { RangeSliderComponent } from './components/settings/range-slider/range-slider.component';
+import { DetailsPanelComponent } from './components/settings/details-panel/details-panel.component';
+import { ElevatorDetailsComponent } from './components/settings/details-panel/elevators-tab/elevator-details/elevator-details.component';
+import { FloorDetailsComponent } from './components/settings/details-panel/floors-tab/floor-details/floor-details.component';
+import { ElevatorsTabComponent } from './components/settings/details-panel/elevators-tab/elevators-tab.component';
+import { FloorsTabComponent } from './components/settings/details-panel/floors-tab/floors-tab.component';
 import { ElevatorContainerComponent } from './components/elevators/elevator-container/elevator-container.component';
 
 

@@ -1,6 +1,6 @@
-<script src="../../../../services/elevator.service.ts"></script>
-<script src="../../../../types/elevator-config.type.ts"></script>
-<script src="../../../../config.ts"></script>
+<script src="../../../../../services/elevator.service.ts"></script>
+<script src="../../../../../types/elevator-config.type.ts"></script>
+<script src="../../../../../config.ts"></script>
 <article class="elevator-details">
   <header class="elevator-details__header">
     <section class="elevator-details__id">
@@ -55,19 +55,6 @@
       <li class="elevator-details__settings-item">
         <input class="elevator-details__settings-input"
                type="number"
-               name="minFloorNum"
-               id="min-floor"
-               [min]="elevatorService.floors.minFloor"
-               [max]="elevatorService.floors.maxFloor"
-               (input)="validateFloorInput($event)"
-               (change)="validateOnChange($event, true)"
-               [(ngModel)]="config.minFloorNum"
-               required>
-        <span class="elevator-details__settings-text">Min floor</span>
-      </li>
-      <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input"
-               type="number"
                name="maxFloorNum"
                id="max-floor"
                [min]="elevatorService.floors.minFloor"
@@ -77,6 +64,19 @@
                [(ngModel)]="config.maxFloorNum"
                required>
         <span class="elevator-details__settings-text">Max floor</span>
+      </li>
+      <li class="elevator-details__settings-item">
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="minFloorNum"
+               id="min-floor"
+               [min]="elevatorService.floors.minFloor"
+               [max]="elevatorService.floors.maxFloor"
+               (input)="validateFloorInput($event)"
+               (change)="validateOnChange($event, true)"
+               [(ngModel)]="config.minFloorNum"
+               required>
+        <span class="elevator-details__settings-text">Min floor</span>
       </li>
       <li class="elevator-details__settings-item">
         <input class="elevator-details__settings-input"

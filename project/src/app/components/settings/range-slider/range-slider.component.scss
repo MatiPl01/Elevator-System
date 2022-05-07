@@ -1,5 +1,5 @@
-@use "/src/scss/utils/gradients" as g;
-@use '/src/scss/utils/colors' as c;
+@use "../../../../scss/utils/gradients" as g;
+@use '../../../../scss/utils/colors' as c;
 
 
 ::ng-deep {
@@ -14,7 +14,7 @@
       &-bar {
         background: g.$gray-light !important;
       }
-      
+
       &-pointer {
         transform: scale(0.5);
         background: g.$primary !important;

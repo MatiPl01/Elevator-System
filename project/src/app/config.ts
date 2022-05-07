@@ -136,8 +136,8 @@ export const defaultsConfig = {
   maxPossibleDoorToggleDuration: 5,
   minPossibleFloorHeight: 2.5,
   maxPossibleFloorHeight: 10,
-  minPossibleFloorNum: -10,
-  maxPossibleFloorNum: 200,
+  minPossibleFloorNum: -3,
+  maxPossibleFloorNum: 60,
 };
 
 export const floorsConfig = {

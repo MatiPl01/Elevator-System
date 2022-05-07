@@ -3,7 +3,7 @@ import { ElevatorService } from 'src/app/services/elevator.service';
 import { defaultsConfig, defaultElevatorConfig } from 'src/app/config';
 import { ElevatorData } from 'src/app/services/elevator.service';
 import { Subscription } from 'rxjs';
-import { ElevatorConfig } from "../../../../types/elevator-config.type";
+import { ElevatorConfig } from "../../../../../types/elevator-config.type";
 
 @Component({
   selector: 'app-elevator-details',
@@ -74,6 +74,7 @@ export class ElevatorDetailsComponent implements OnInit, OnDestroy {
       this.updateMaxFloor();
     }
     this.updateIdleFloor();
+    Object.assign(this.elevator.config, this.config);
 
     this.elevator?.component?.reset();
     this.elevatorService.notifyElevatorFloorsChange(this.idx);
