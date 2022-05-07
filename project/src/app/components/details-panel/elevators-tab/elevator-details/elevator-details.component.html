@@ -1,3 +1,6 @@
+<script src="../../../../services/elevator.service.ts"></script>
+<script src="../../../../types/elevator-config.type.ts"></script>
+<script src="../../../../config.ts"></script>
 <article class="elevator-details">
   <header class="elevator-details__header">
     <section class="elevator-details__id">
@@ -12,7 +15,7 @@
           <use href="/assets/icons/icons.svg#trash"></use>
         </svg>
       </button>
-      
+
       <h3 class="elevator-details__state">
         {{ elevator.component?.state }}
       </h3>
@@ -50,84 +53,95 @@
   <form class="elevator-details__settings" #f="ngForm">
     <ul class="elevator-details__settings-list">
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="min-floor" 
-               id="min-floor" 
-               [min]="elevatorService.floors.minFloor" 
-               [max]="elevatorService.floors.maxFloor" 
-               [(ngModel)]="elevator.config.minFloorNum" 
-               required
-               (change)="updateElevatorFloors()">
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="minFloorNum"
+               id="min-floor"
+               [min]="elevatorService.floors.minFloor"
+               [max]="elevatorService.floors.maxFloor"
+               (input)="validateFloorInput($event)"
+               (change)="validateOnChange($event, true)"
+               [(ngModel)]="config.minFloorNum"
+               required>
         <span class="elevator-details__settings-text">Min floor</span>
       </li>
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="max-floor" 
-               id="max-floor" 
-               [min]="elevatorService.floors.minFloor" 
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="maxFloorNum"
+               id="max-floor"
+               [min]="elevatorService.floors.minFloor"
                [max]="elevatorService.floors.maxFloor"
-               [(ngModel)]="elevator.config.maxFloorNum" 
-               required
-               (change)="updateElevatorFloors()">
+               (input)="validateFloorInput($event)"
+               (change)="validateOnChange($event, true)"
+               [(ngModel)]="config.maxFloorNum"
+               required>
         <span class="elevator-details__settings-text">Max floor</span>
       </li>
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="idle-floor" 
-               id="idle-floor" 
-               [min]="elevatorService.floors.minFloor" 
-               [max]="elevatorService.floors.maxFloor"
-               [(ngModel)]="elevator.config.idleFloorNum" 
-               required
-               (change)="updateElevatorFloors()">
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="idleFloorNum"
+               id="idle-floor"
+               [min]="config.minFloorNum"
+               [max]="config.maxFloorNum"
+               (input)="validateFloorInput($event)"
+               (change)="validateOnChange($event, true)"
+               [(ngModel)]="config.idleFloorNum"
+               required>
         <span class="elevator-details__settings-text">Idle floor</span>
       </li>
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="max-load" 
-               id="max-load" 
-               min="1" 
-               [max]="defaultsConfig.maxPossibleLoad" 
-               [(ngModel)]="elevator.config.maxLoad" 
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="maxLoad"
+               id="max-load"
+               min="1"
+               [max]="defaultsConfig.maxPossibleLoad"
+               (input)="validateInput($event, true)"
+               (change)="validateOnChange($event, true)"
+               [(ngModel)]="config.maxLoad"
                required>
         <span class="elevator-details__settings-text">Max load</span>
       </li>
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="speed" 
-               id="speed" 
-               [min]="defaultsConfig.minPossibleSpeed" 
-               [max]="defaultsConfig.maxPossibleSpeed" 
-               [(ngModel)]="elevator.config.speed" 
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="speed"
+               id="speed"
+               [min]="defaultsConfig.minPossibleSpeed"
+               [max]="defaultsConfig.maxPossibleSpeed"
+               (input)="validateInput($event)"
+               (change)="validateOnChange($event)"
+               [(ngModel)]="config.speed"
                step="0.05"
                required>
         <span class="elevator-details__settings-text">Speed</span>
       </li>
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="stop-duration" 
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="stopDuration"
                id="stop-duration"
-               [min]="defaultsConfig.minPossibleStopDuration" 
-               [max]="defaultsConfig.maxPossibleStopDuration" 
-               [(ngModel)]="elevator.config.stopDuration"
+               [min]="defaultsConfig.minPossibleStopDuration"
+               [max]="defaultsConfig.maxPossibleStopDuration"
+               [(ngModel)]="config.stopDuration"
+               (input)="validateInput($event)"
+               (change)="validateOnChange($event)"
                step="0.1"
                required>
         <span class="elevator-details__settings-text">Stop duration</span>
       </li>
       <li class="elevator-details__settings-item">
-        <input class="elevator-details__settings-input" 
-               type="number" 
-               name="door-duration" 
+        <input class="elevator-details__settings-input"
+               type="number"
+               name="doorDuration"
                id="door-duration"
-               [min]="defaultsConfig.minPossibleDoorToggleDuration" 
-               [max]="defaultsConfig.maxPossibleDoorToggleDuration" 
-               [(ngModel)]="elevator.config.toggleDoorDuration" 
+               [min]="defaultsConfig.minPossibleDoorToggleDuration"
+               [max]="defaultsConfig.maxPossibleDoorToggleDuration"
+               [(ngModel)]="config.toggleDoorDuration"
+               (input)="validateInput($event)"
+               (change)="validateOnChange($event)"
                step="0.1"
                required>
         <span class="elevator-details__settings-text">Toggle door duration</span>

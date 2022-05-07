@@ -45,8 +45,8 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
           this.reset();
           this.elevatorService.notifyElevatorFloorsChange(this.idx);
         })
-    ) 
-  } 
+    )
+  }
 
   get state(): ElevatorState {
     return this._state;
@@ -100,6 +100,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
     const elevatorData = this.elevatorService.elevators[this.idx];
     this.id = this.elevatorService.getElevatorId(this.idx);
     this.config = elevatorData.config;
+    this.updateAvailableFloors();
     this._currentFloorNum = this.config.idleFloorNum;
     this.bottom = this.calcDistanceFromBottom(this._currentFloorNum);
     this.animationService.register(this);
@@ -122,7 +123,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
         break;
 
       case ElevatorState.WAITING:
-        const elapsed = this.timeService.getElapsedTime(this.stoppedStartTime);  
+        const elapsed = this.timeService.getElapsedTime(this.stoppedStartTime);
         if (elapsed >= this.stopDuration) {
           if (!this.nextFloor) this._state = ElevatorState.IDLE;
           else this._state = ElevatorState.CLOSE_DOOR;
@@ -147,10 +148,9 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
   }
 
   reset() {
-    this._currentFloorNum = this.idleFloorNum;
     this._state = ElevatorState.IDLE;
-    this._currentFloorNum = this.config.idleFloorNum;
     this._nextFloors.splice(1);
+    this._currentFloorNum = this.config.idleFloorNum;
     this.bottom = this.calcDistanceFromBottom(this._currentFloorNum);
   }
 
@@ -261,11 +261,11 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
     const [totalTime, enterIdx, leaveIdx] = this.findLowestTimeRoute(fromFloorNum, toFloorNum, possibleStops);
 
     return {
-      totalTime, 
-      enterIdx, 
+      totalTime,
+      enterIdx,
       leaveIdx,
       fromFloorNum,
-      toFloorNum    
+      toFloorNum
     };
   }
 
@@ -286,13 +286,13 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
     const res = [];
     let t = 0;
     this._nextFloors[0].floorNum = this.currentFloorNum;
-    
+
     // If is going up
     if (fromFloorNum < toFloorNum) {
       this._nextFloors.push({ floorNum: Infinity });
 
       for (let s = 0; s + 1 < this._nextFloors.length; s++) {
-        // Check if the fromFloorNum can be inserted after the s index 
+        // Check if the fromFloorNum can be inserted after the s index
         // (or is already inserted at the s index)
         if (this._nextFloors[s].floorNum <= fromFloorNum && fromFloorNum < this._nextFloors[s + 1].floorNum) {
           // Find a possible toFloorNum insertion index
@@ -315,7 +315,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
         this._nextFloors.push({ floorNum: -Infinity });
 
         for (let s = 0; s + 1 < this._nextFloors.length; s++) {
-          // Check if the fromFloorNum can be inserted after the s index 
+          // Check if the fromFloorNum can be inserted after the s index
           // (or is already inserted at the s index)
           if (this._nextFloors[s].floorNum >= fromFloorNum && fromFloorNum > this._nextFloors[s + 1].floorNum) {
             // Find a possible toFloorNum insertion index
@@ -351,7 +351,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
     let lowestTime = Infinity;
     let lastIdx = this._nextFloors.length;
     let bestEnterIdx = lastIdx, bestLeaveIdx = lastIdx;
-    
+
     for (const [enterIdx, leaveIdx] of possibleStops) {
       const cost = this.calcTotalTime(fromFloorNum, toFloorNum, enterIdx, leaveIdx);
       if (cost < lowestTime) {
@@ -360,7 +360,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
         bestLeaveIdx = leaveIdx;
       }
     }
-    
+
     return [lowestTime, bestEnterIdx, bestLeaveIdx];
   }
 
@@ -421,19 +421,19 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
     // or the elevator is heading to the idleFloorNum
     if (!this.nextFloor?.details) return true;
 
-    // If the elevator already has a stored stop at fromFloorNum, 
+    // If the elevator already has a stored stop at fromFloorNum,
     // we have to check if there is enough space for the new passenger
     if (this._nextFloors[enterIdx].floorNum === fromFloorNum) {
       const { noEntering, noInside } = this._nextFloors[enterIdx].details!;
       if (noEntering + noInside >= this.maxLoad) return false;
     }
-    
+
     // If the elevator already has a stored stop at toFloorNum
     if (this._nextFloors[leaveIdx].floorNum === toFloorNum) {
       const { noLeaving, noInside } = this._nextFloors[leaveIdx].details!;
       if (noLeaving + noInside >= this.maxLoad) return false;
     }
-    
+
     // Check is there will be enough space in the elevator at
     // each intermediate stop (between the fromFloorNum and toFloorNum)
     for (let i = enterIdx + 1; i < leaveIdx; i++) {
@@ -449,7 +449,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
   }
 
   private calcDistanceFromBottom(floorNum: number): number {
-    return this.elevatorService.getFloorHeight(floorNum)! 
+    return this.elevatorService.getFloorHeight(floorNum)!
          - this.elevatorService.getFloorHeight(this.minFloorNum)!;
   }
 
@@ -469,7 +469,7 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
 
     this.bottom += distance;
     const nextBottom = this.calcDistanceFromBottom(this.nextFloor.floorNum);
-    
+
     if (Math.abs(this.bottom - nextBottom) < Math.abs(1.25 * distance)) {
       this._state = ElevatorState.OPEN_DOOR;
       this.bottom = nextBottom;
@@ -481,10 +481,10 @@ export class ElevatorComponent implements OnInit, OnDestroy, ISprite {
   private updateCurrentFloorNum() {
     // If the elevator has passed the current floor while going up
     if (this.currentFloorNum < this.maxFloorNum
-      && this.calcDistanceToFloor(this.currentFloorNum + 1) < 0e-6) this._currentFloorNum++;
+      && this.calcDistanceToFloor(this.currentFloorNum + 1) < 1e-6) this._currentFloorNum++;
     // If the elevator has passed the current floor while going down
     else if (this.currentFloorNum > this.minFloorNum
-      && this.calcDistanceToFloor(this.currentFloorNum - 1) < 0e-6) this._currentFloorNum--;
+      && this.calcDistanceToFloor(this.currentFloorNum - 1) < 1e-6) this._currentFloorNum--;
   }
 
   private toggleDoor() {

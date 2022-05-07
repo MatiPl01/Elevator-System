@@ -1,0 +1,24 @@
+<article class="floor-details">
+  <header class="floor-details__header">
+    <article class="floor-details__number">
+      <h2>{{ floorNum }}</h2>
+      <h5>Floor</h5>
+    </article>
+  </header>
+
+  <section class="floor-details__settings">
+    <input class="floor-details__settings-input"
+           type="number"
+           name="height"
+           id="floor-height"
+           [min]="defaultsConfig.minPossibleFloorHeight"
+           [max]="defaultsConfig.maxPossibleFloorHeight"
+           [(ngModel)]="heightObj.height"
+           step=".25"
+           required
+           (input)="updateHeight()"
+           (blur)="correctInputValue()"
+           #input>
+        <span class="floor-details__settings-text">Height</span>
+  </section>
+</article>

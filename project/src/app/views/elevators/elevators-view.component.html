@@ -20,7 +20,7 @@
 
     <input type="checkbox" name="settings-toggle" id="settings-toggle" class="settings__checkbox" #checkbox (change)="uncheckOtherCheckboxes($event)">
     <section class="settings__container">
-      <app-settings-box></app-settings-box>
+      <app-options></app-options>
     </section>
   </section>
 
@@ -32,10 +32,10 @@
         </svg>
       </label>
     </button>
-    
+
     <input type="checkbox" name="details-toggle" id="details-toggle" class="details__checkbox" #checkbox (change)="uncheckOtherCheckboxes($event)" checked>
     <section class="details__container">
-      <app-details-box></app-details-box>
+      <app-details-panel></app-details-panel>
     </section>
   </section>
 </main>

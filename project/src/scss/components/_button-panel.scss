@@ -7,7 +7,7 @@
 .button-panel {
   $underline-height: .5rem;
 
-  width: 45rem;
+  width: 50rem;
   background-color: c.$gray-light-1;
   box-shadow: sh.$black-strong-small, sh.$black-light-large;
   border-radius: .5rem;
@@ -72,7 +72,7 @@
       white-space: nowrap;
       width: 100%;
     }
-    
+
     &--prev,
     &--next {
       transition: opacity .3s ease-out;
@@ -84,7 +84,7 @@
       }
     }
 
-    &--cancel,
+    &--close,
     &--submit {
       color: c.$white;
       text-transform: uppercase;
@@ -100,7 +100,7 @@
 
     &--submit {
       &:not(.disabled):active {
-        transform: translateY(2px) scale(.99); 
+        transform: translateY(2px) scale(.99);
       }
 
       &.disabled {
@@ -147,7 +147,8 @@
     transition: left .5s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     &.active {
-      left: 0;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     &.active ~ & {
@@ -159,6 +160,7 @@
     display: grid;
     grid-row-gap: 2rem;
     grid-column-gap: 1rem;
+    margin: 0 auto;
     grid-template-columns: repeat(4, 1fr);
   }
 

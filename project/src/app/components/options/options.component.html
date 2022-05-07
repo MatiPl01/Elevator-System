@@ -1,30 +1,30 @@
-<article class="settings-box">
-  <header class="settings-box__header">
-    <h2 class="settings-box__heading">Settings</h2>
+<article class="options">
+  <header class="options__header">
+    <h2 class="options__heading">Options</h2>
   </header>
 
-  <section class="settings-box__buttons">
-    <button class="settings-box__button settings-box__button--play"
+  <section class="options__buttons">
+    <button class="options__button options__button--play"
             (click)="playAnimation()"
             [ngClass]="{ disabled: isPlayingAnimation }"
             [disabled]="isPlayingAnimation">
-      <svg class="settings-box__icon">
+      <svg class="options__icon">
         <use href="/assets/icons/icons.svg#play"></use>
       </svg>
     </button>
 
-    <button class="settings-box__button settings-box__button--pause"
+    <button class="options__button options__button--pause"
             (click)="pauseAnimation()"
             [ngClass]="{ disabled: !isPlayingAnimation }"
             [disabled]="!isPlayingAnimation">
-      <svg class="settings-box__icon">
+      <svg class="options__icon">
         <use href="/assets/icons/icons.svg#pause"></use>
       </svg>
     </button>
   </section>
 
-  <div class="settings-box__slider">
-    <h3 class="settings-box__slider-title">
+  <div class="options__slider">
+    <h3 class="options__slider-title">
       Time ratio
     </h3>
     <app-range-slider
@@ -36,8 +36,8 @@
     ></app-range-slider>
   </div>
 
-  <div class="settings-box__slider">
-    <h3 class="settings-box__slider-title">
+  <div class="options__slider">
+    <h3 class="options__slider-title">
       Scale
     </h3>
     <app-range-slider

@@ -1,7 +1,7 @@
 @forward 'button-panel';
-@forward 'elevator-box';
-@forward 'elevator';
-@forward 'settings-box';
-@forward 'details-box';
-@forward 'elevators-tab';
-@forward 'floors-tab';
+@forward 'elevators/elevators-box';
+@forward 'elevators/elevator';
+@forward 'options';
+@forward 'details-panel/details-panel';
+@forward 'details-panel/elevators-tab';
+@forward 'details-panel/floors-tab';

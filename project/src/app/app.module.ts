@@ -8,14 +8,14 @@ import { ButtonPanelComponent } from './components/button-panel/button-panel.com
 import { ElevatorsComponent } from './components/elevators/elevators.component';
 import { ElevatorComponent } from './components/elevators/elevator/elevator.component';
 import { ElevatorsViewComponent } from './views/elevators/elevators-view.component';
-import { SettingsBoxComponent } from './components/settings-box/settings-box.component';
+import { SettingsBoxComponent } from './components/options/options.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { RangeSliderComponent } from './components/range-slider/range-slider.component';
-import { DetailsBoxComponent } from './components/details-box/details-box.component';
-import { ElevatorDetailsComponent } from './components/details-box/elevators-tab/elevator-details/elevator-details.component';
-import { FloorDetailsComponent } from './components/details-box/floors-tab/floor-details/floor-details.component';
-import { ElevatorsTabComponent } from './components/details-box/elevators-tab/elevators-tab.component';
-import { FloorsTabComponent } from './components/details-box/floors-tab/floors-tab.component';
+import { DetailsPanelComponent } from './components/details-panel/details-panel.component';
+import { ElevatorDetailsComponent } from './components/details-panel/elevators-tab/elevator-details/elevator-details.component';
+import { FloorDetailsComponent } from './components/details-panel/floors-tab/floor-details/floor-details.component';
+import { ElevatorsTabComponent } from './components/details-panel/elevators-tab/elevators-tab.component';
+import { FloorsTabComponent } from './components/details-panel/floors-tab/floors-tab.component';
 import { ElevatorContainerComponent } from './components/elevators/elevator-container/elevator-container.component';
 
 
@@ -28,7 +28,7 @@ import { ElevatorContainerComponent } from './components/elevators/elevator-cont
     ElevatorsViewComponent,
     SettingsBoxComponent,
     RangeSliderComponent,
-    DetailsBoxComponent,
+    DetailsPanelComponent,
     ElevatorDetailsComponent,
     FloorDetailsComponent,
     ElevatorsTabComponent,

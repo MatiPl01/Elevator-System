@@ -1,8 +1,8 @@
-@use '../utils/mixins' as *;
-@use '../utils/animations' as *;
-@use '../utils/colors' as c;
-@use '../utils/shadows' as sh;
-@use '../utils/gradients' as g;
+@use '../../utils/mixins' as *;
+@use '../../utils/animations' as *;
+@use '../../utils/colors' as c;
+@use '../../utils/shadows' as sh;
+@use '../../utils/gradients' as g;
 
 
 .elevator {
@@ -12,7 +12,7 @@
   left: 50%;
   transform: translate(-50%);
   overflow: hidden;
-  
+
   &::before {
     content: '';
     padding-bottom: 125%;
@@ -30,10 +30,16 @@
     width: 50%;
     height: 100%;
     background: g.$gray-medium;
-    transition: all .75s ease-out;
 
-    &--left { left: 0; }
-    &--right { right: 0; }
+    &--left {
+      left: 0;
+      transition: left .75s ease-out;
+    }
+
+    &--right {
+      right: 0;
+      transition: right .75s ease-out;
+    }
   }
 
   &__doors.open &__door {
@@ -59,7 +65,7 @@
     perspective: 5em;
     inset: 0;
   }
-  
+
   &__wall,
   &__floor,
   &__roof {

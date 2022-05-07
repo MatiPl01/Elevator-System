@@ -1,24 +1,24 @@
-<article class="details-box">
-  <header class="details-box__header">
-    <h2 class="details-box__heading">
+<article class="details-panel">
+  <header class="details-panel__header">
+    <h2 class="details-panel__heading">
       Details
     </h2>
   </header>
 
-  <menu class="details-box__menu">
-    <li class="details-box__menu-item" 
+  <menu class="details-panel__menu">
+    <li class="details-panel__menu-item"
         [ngClass]="{ active: activeTab === DetailsTab.ELEVATORS }"
         (click)="switchTab(DetailsTab.ELEVATORS)">
       Elevators
     </li>
-    <li class="details-box__menu-item" 
+    <li class="details-panel__menu-item"
         [ngClass]="{ active: activeTab === DetailsTab.FLOORS }"
         (click)="switchTab(DetailsTab.FLOORS)">
       Floors
     </li>
   </menu>
 
-  <section class="details-box__tab-container" [ngSwitch]="activeTab">
+  <section class="details-panel__tab-container" [ngSwitch]="activeTab">
     <app-elevators-tab *ngSwitchCase="DetailsTab.ELEVATORS"></app-elevators-tab>
     <app-floors-tab *ngSwitchCase="DetailsTab.FLOORS"></app-floors-tab>
   </section>

@@ -5,8 +5,8 @@ import { TimeService } from 'src/app/services/time.service';
 
 
 @Component({
-  selector: 'app-settings-box',
-  templateUrl: './settings-box.component.html'
+  selector: 'app-options',
+  templateUrl: './options.component.html'
 })
 export class SettingsBoxComponent {
   public readonly MIN_SCALE = .1;

@@ -3,7 +3,7 @@
 @use '../utils/extends' as *;
 
 
-.settings-box {
+.options {
   @extend %content-box;
   width: 20rem;
 

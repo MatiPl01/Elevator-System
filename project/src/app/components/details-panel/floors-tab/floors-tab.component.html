@@ -1,7 +1,8 @@
+<script src="floors-tab.component.ts"></script>
 <article class="floors-tab">
   <ul class="floors-tab__floors-list">
     <li *ngFor="let heightObj of elevatorService.floors.heights; let idx = index" class="floors-tab__floors-item">
-      <app-floor-details 
+      <app-floor-details
         [idx]="idx"
         [heightObj]="heightObj"
       ></app-floor-details>
@@ -10,28 +11,34 @@
 
   <section class="floors-tab__settings">
     <h3 class="floors-tab__settings-heading">Settings</h3>
-    <form action="#" class="floors-tab__settings-form" (ngSubmit)="updateFloors(f)" #f="ngForm">
+    <form action="#" class="floors-tab__settings-form" (ngSubmit)="updateFloors()">
       <ul class="floors-tab__settings-list">
         <li class="floors-tab__settings-item">
-          <input class="floors-tab__settings-input" 
-                type="number" 
-                name="min-floor" 
-                id="min-floor" 
-                [min]="defaultsConfig.minPossibleFloorNum" 
+          <input class="floors-tab__settings-input"
+                type="number"
+                name="minFloorNum"
+                id="min-floor"
+                [min]="defaultsConfig.minPossibleFloorNum"
                 [max]="defaultsConfig.maxPossibleFloorNum"
                 [(ngModel)]="minFloorNum"
+                 (input)="updateOnInput($event)"
+                 (change)="updateOnInput($event)"
+                 (blur)="updateOnBlur($event)"
                 required>
           <span class="floors-tab__settings-text">Min floor</span>
         </li>
 
         <li class="floors-tab__settings-item">
-          <input class="floors-tab__settings-input" 
-                type="number" 
-                name="max-floor" 
-                id="max-floor" 
-                [min]="defaultsConfig.minPossibleFloorNum" 
-                [max]="defaultsConfig.maxPossibleFloorNum" 
+          <input class="floors-tab__settings-input"
+                type="number"
+                name="maxFloorNum"
+                id="max-floor"
+                [min]="defaultsConfig.minPossibleFloorNum"
+                [max]="defaultsConfig.maxPossibleFloorNum"
                 [(ngModel)]="maxFloorNum"
+                 (input)="updateOnInput($event)"
+                 (change)="updateOnInput($event)"
+                 (blur)="updateOnBlur($event)"
                 required>
           <span class="floors-tab__settings-text">Max floor</span>
         </li>

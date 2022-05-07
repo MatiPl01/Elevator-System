@@ -2,11 +2,11 @@
   <div class="button-panel__inner">
     <header class="button-panel__header">
       <h2 class="button-panel__heading">Choose destination</h2>
-    
+
       <div class="button-panel__groups">
         <ul class="button-panel__group-list"
             (mouseleave)="setUnderlinedTab(currentTabIdx)">
-          <li *ngFor="let group of floorGroups; let idx = index" 
+          <li *ngFor="let group of floorGroups; let idx = index"
               [ngClass]="{ active: idx === currentTabIdx }"
               (mouseenter)="setUnderlinedTab(idx)"
               class="button-panel__group">
@@ -18,17 +18,17 @@
             </button>
           </li>
         </ul>
-        <div class="button-panel__underline" 
-             [ngStyle]="{ 
+        <div class="button-panel__underline"
+             [ngStyle]="{
               width: 1 / floorGroups.length * 100 + '%',
               left: underlinedTabIdx / floorGroups.length * 100 + '%'
         }"></div>
       </div>
     </header>
-    
+
     <section class="button-panel__buttons">
       <div class="button-panel__tabs-wrapper">
-        <button class="button-panel__button button-panel__button--prev" 
+        <button class="button-panel__button button-panel__button--prev"
                 (click)="changeButtonTab(-1)"
                 type="button"
                 [ngClass]="{ hidden: currentTabIdx === 0 }">
@@ -36,21 +36,21 @@
             <use href="/assets/icons/icons.svg#chevron-left"></use>
           </svg>
         </button>
-        
+
         <ul class="button-panel__button-tabs">
-          <li *ngFor="let group of floorGroups; let idx = index" 
+          <li *ngFor="let group of floorGroups; let idx = index"
               [ngClass]="{ active: idx === currentTabIdx }"
               class="button-panel__button-tab">
             <ul class="button-panel__button-list">
-              <li *ngFor="let floorNum of group" 
+              <li *ngFor="let floorNum of group"
                    class="button-panel__button-item">
-                <input class="button-panel__button-radio" 
-                      id="floor-choice-{{ floorNum }}" 
-                      type="radio" 
+                <input class="button-panel__button-radio"
+                      id="floor-choice-{{ floorNum }}"
+                      type="radio"
                       name="floor-choice"
-                      (change)="chooseFloor($event)" 
+                      (change)="chooseFloor($event)"
                       [value]="floorNum">
-                <label class="button-panel__button-label" 
+                <label class="button-panel__button-label"
                        for="floor-choice-{{ floorNum }}">
                   {{ floorNum }}
                 </label>
@@ -58,8 +58,8 @@
             </ul>
           </li>
         </ul>
-        
-        <button class="button-panel__button button-panel__button--next" 
+
+        <button class="button-panel__button button-panel__button--next"
                 (click)="changeButtonTab(+1)"
                 type="button"
                 [ngClass]="{ hidden: currentTabIdx === floorGroups.length - 1 }">
@@ -68,14 +68,14 @@
           </svg>
         </button>
       </div>
-  
+
       <div class="button-panel__controls">
-        <button class="button-panel__button button-panel__button--cancel"
+        <button class="button-panel__button button-panel__button--close"
                 (click)="closePanel()"
                 type="button">
-          Cancel
+          Close
         </button>
-        
+
         <button class="button-panel__button button-panel__button--submit"
               (click)="submitChoice()"
               type="button"

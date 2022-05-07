@@ -1,8 +1,8 @@
-@use '../utils/mixins' as *;
-@use '../utils/extends' as *;
-@use '../utils/colors' as c;
-@use '../utils/gradients' as g;
-@use '../utils/shadows' as sh;
+@use '../../utils/mixins' as *;
+@use '../../utils/extends' as *;
+@use '../../utils/colors' as c;
+@use '../../utils/gradients' as g;
+@use '../../utils/shadows' as sh;
 
 
 .floors-tab {
@@ -62,11 +62,11 @@
 
   &__header {
     background: g.$primary;
-    flex-basis: 4rem;
+    flex-basis: 5rem;
     align-self: stretch;
-    @include flex-center;    
+    @include flex-center;
   }
-  
+
   &__number {
     text-align: center;
 
@@ -75,9 +75,9 @@
       font-size: 2.4rem;
       color: c.$gray-dark-1;
     }
-    
+
     h5 {
-      font-size: .8rem;      
+      font-size: .8rem;
       text-transform: uppercase;
       letter-spacing: -.5px;
     }

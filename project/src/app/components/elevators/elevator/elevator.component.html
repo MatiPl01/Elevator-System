@@ -1,9 +1,10 @@
+<script src="../../details-panel/elevators-tab/elevator-details/elevator-details.component.ts"></script>
 <article class="elevator"
          [ngStyle]="{ 'bottom': bottom + 'em' }">
   <section class="elevator__doors"
-           [ngClass]="{ open: 
-              state === ElevatorState.IDLE || 
-              state === ElevatorState.WAITING || 
+           [ngClass]="{ open:
+              state === ElevatorState.IDLE ||
+              state === ElevatorState.WAITING ||
               state === ElevatorState.OPEN_DOOR }">
     <div class="elevator__door elevator__door--left"
          [ngStyle]="{ 'transition-duration': timeService.convertDuration(toggleDoorDuration) + 's' }">

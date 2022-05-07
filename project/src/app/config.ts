@@ -127,7 +127,7 @@ export const sampleRoutes = [
 ];
 
 export const defaultsConfig = {
-  maxPossibleLoad: 8,
+  maxPossibleLoad: 10,
   minPossibleSpeed: .25,
   maxPossibleSpeed: 5,
   minPossibleStopDuration: 2,
@@ -137,7 +137,7 @@ export const defaultsConfig = {
   minPossibleFloorHeight: 2.5,
   maxPossibleFloorHeight: 10,
   minPossibleFloorNum: -10,
-  maxPossibleFloorNum: 1000,
+  maxPossibleFloorNum: 200,
 };
 
 export const floorsConfig = {

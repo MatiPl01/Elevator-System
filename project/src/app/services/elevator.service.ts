@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { ElevatorComponent } from "../components/elevators/elevator/elevator.component";
+import { defaultsConfig } from "../config";
 import { ElevatorConfig } from "../types/elevator-config.type";
 import { FloorsConfig } from "../types/floors-config.type";
 import { RouteData } from "../types/route-data.type";
@@ -7,7 +8,7 @@ import * as config from "../config";
 
 
 export type ElevatorData = {
-  config: ElevatorConfig, 
+  config: ElevatorConfig,
   component: ElevatorComponent | null
 }
 
@@ -23,7 +24,7 @@ export class ElevatorService {
 
   private _floors: FloorsConfig = config.floorsConfig;
   private _elevators: ElevatorData[] = [];
-  
+
   public readonly floorHeights: Map<number, number> = new Map();
   private readonly availableFloors: Map<number, { min: number, max: number }> = new Map();
 
@@ -31,7 +32,7 @@ export class ElevatorService {
     this.calcFloorHeightSums();
     this.loadElevatorsConfig();
     this.updateAvailableFloors();
-    
+
     // Load the routes asynchronously (to ensure that elevator components were created)
     setTimeout(this.loadSampleRoutes.bind(this), 0);
   }
@@ -103,9 +104,9 @@ export class ElevatorService {
       maxFloor: maxFloorNum,
       heights: []
     };
-  
+
     // Add floors that are lower than the current minimum floor number
-    for (let floorNum = minFloorNum; floorNum < this._floors.minFloor; floorNum++) {
+    for (let floorNum = minFloorNum; floorNum < Math.min(this._floors.minFloor, maxFloorNum + 1); floorNum++) {
       newFloors.heights.push({ height: config.defaultsConfig.minPossibleFloorHeight });
     }
 
@@ -116,12 +117,12 @@ export class ElevatorService {
     newFloors.heights.push(...this._floors.heights.slice(startIdx, endIdx));
 
     // Add floors that are higher than the floor of the current maxFloorNum
-    for (let floorNum = this._floors.maxFloor; floorNum <= maxFloorNum; floorNum++) {
+    for (let floorNum = Math.max(this._floors.maxFloor + 1, minFloorNum); floorNum < maxFloorNum + 1; floorNum++) {
       newFloors.heights.push({ height: config.defaultsConfig.minPossibleFloorHeight });
     }
 
     this._floors = newFloors;
-    this.floorsChange.emit(newFloors);
+    this.notifyFloorChange();
   }
 
   notifyFloorChange() {
@@ -197,7 +198,7 @@ export class ElevatorService {
     for (let i = this.floors.minFloor; i <= this.floors.maxFloor; i++) {
       this.availableFloors.set(i, { min: Infinity, max: -Infinity });
     }
-    
+
     for (const { config: elevatorConfig } of this.elevators) {
       for (let i = elevatorConfig.minFloorNum; i <= elevatorConfig.maxFloorNum; i++) {
         // Update the minimum and maximum floor reachable from the ith floor
@@ -214,9 +215,22 @@ export class ElevatorService {
   }
 
   private loadElevatorsConfig() {
-    this._elevators = config.elevatorsConfig.map((elevatorConfig: ElevatorConfig) => {
+    this._elevators = config.elevatorsConfig.map((elevatorConfig: ElevatorConfig, idx: number) => {
+      if (!ElevatorService.validateElevatorConfig(elevatorConfig)) {
+        throw new Error(`${idx} elevator config is not valid. Check the defaults config to see max/min possible values.`);
+      }
       return { config: elevatorConfig, component: null };
     });
+  }
+
+  private static validateElevatorConfig(elevatorConfig: ElevatorConfig): boolean {
+    return !(elevatorConfig.maxLoad > defaultsConfig.maxPossibleLoad
+          || elevatorConfig.speed < defaultsConfig.minPossibleSpeed
+          || elevatorConfig.speed > defaultsConfig.maxPossibleSpeed
+          || elevatorConfig.stopDuration < defaultsConfig.minPossibleStopDuration
+          || elevatorConfig.stopDuration > defaultsConfig.maxPossibleStopDuration
+          || elevatorConfig.toggleDoorDuration < defaultsConfig.minPossibleDoorToggleDuration
+          || elevatorConfig.toggleDoorDuration > defaultsConfig.maxPossibleDoorToggleDuration);
   }
 
   private loadSampleRoutes() {
